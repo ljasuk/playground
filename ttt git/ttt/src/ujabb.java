@@ -1,31 +1,97 @@
 import java.util.*;
-//import java.util.function;
+import java.util.regex.Pattern;
+import java.io.File;
+import java.io.FileFilter;
+import java.lang.*;
 
-interface IntUnaryOperator {
-	public int pek(int a);
-}
+class Holder{
+	private int value;
 
-interface IntConsumer{
-	public void out(int x);
-}
+	synchronized void outValue() {
+		System.err.println(value);
+	}
 
-class ujabb {
-	
-	static int cout(int d, IntUnaryOperator c){
-		return c.pek(d);
+	synchronized void setValue(int value) {
+		this.value = value;
+	}
+
+	Holder(int content) {
+		this.value = content;
 	}
 	
-	static void ki(int f, IntConsumer g) {
-		g.out(f);
+	synchronized void increment(){
+		value++;
+		this.notifyAll();
 	}
 	
-public static void main(String[] args) {	
-	Scanner cin = new Scanner(System.in);
-	/*Hopp egy = new Hopp(){
-		public int pek(int a) {return a*(a-1);}
-	};*/
-	System.out.println("ide: ");
-	int b = cin.nextInt();
-	ki(cout(b, e->{if (e>1)return e*(e-1); else return e*(e+1);}),a->{System.out.println(a);});
-	//cout(b, e->{if (e>1)return e*(e-1); else return e*(e+1);});
-}}
+	synchronized void print(int min) throws InterruptedException{
+		while(value<min){
+			wait();
+		}
+		
+		System.out.println("finally "+value+" ni natta, ne!");
+	}
+	
+	
+	
+}
+
+
+
+public class ujabb {
+	static Holder ob;
+	
+	private static Runnable asd = new Runnable(){
+		public void run(){
+			
+			try {
+				ob.print(15);
+			} catch (InterruptedException e) {
+				
+				e.printStackTrace();
+			}
+		}
+	};
+	
+	private static Runnable qwe = new Runnable() {
+		public void run(){
+			while (true) {
+				ob.increment();
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					//throw new Exception("interrupted", e);
+					e.printStackTrace();
+				}
+				ob.outValue();
+			}
+		}
+	};
+	
+	
+	
+	public static void main(String[] asdf){
+		/*ob = new Holder(12);
+		new Thread(asd).start();
+		new Thread(qwe).start();*/
+		
+		/*Scanner in = new Scanner(System.in);
+		
+		ListOfNumbers lon = new ListOfNumbers();
+		lon.readList("C:\\gyujto.txt");
+		File targetFile = lastFileModified("D:\\Downloads");
+		System.out.println(targetFile.getPath());
+		System.out.println(Pattern.quote(in.nextLine()));
+		in.close();*/
+		Node first = fibNode.newInstance(20);
+		eval fibEval = new FibValuator(20);
+		nodeFilter fibFilter = nodeFilter.newInstance(first, fibEval);
+		Node current = fibFilter.getFilteredFirst();
+		while (current!=null){
+			System.out.println(current.getValue());
+			current = current.next();
+		}
+		
+	}
+    	
+}
