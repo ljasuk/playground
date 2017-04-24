@@ -83,8 +83,8 @@ public class ujabb {
 		System.out.println(targetFile.getPath());
 		System.out.println(Pattern.quote(in.nextLine()));
 		in.close();*/
-		Node first = fibNode.newInstance(20);
-		eval fibEval = new FibValuator(20);
+		Node first = fibNode.newInstance(16);
+		eval fibEval = new FibValuator(16);
 		nodeFilter fibFilter = nodeFilter.newInstance(first, fibEval);
 		Node current = fibFilter.getFilteredFirst();
 		while (current!=null){
