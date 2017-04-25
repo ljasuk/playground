@@ -16,8 +16,7 @@ class Play4{
 			int a = cin.nextInt();
 			return a;
 		} catch (InputMismatchException e){
-			throw new NullPointerException("input wrong", (Throwable) e);
-			return 0;
+			throw new NullPointerException("input wrong");
 		} finally {
 			userInput.close();
 		}
