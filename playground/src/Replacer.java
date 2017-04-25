@@ -96,7 +96,7 @@ public class Replacer {
 	 * @return an instance of Replacer
 	 */
 	public static Replacer newInstance(File file, String[][] toReplace) {
-		return new Replacer(File file, String[][] toReplace);
+		return new Replacer(file, toReplace);
 	}
 
 	public boolean isModified() {
