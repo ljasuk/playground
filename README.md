@@ -6,11 +6,3 @@ from the folllowing places:
 * home
 
 *Also to test and learn git.*
-       /\       
-      /  \      
-     /,--.\     
-    /< () >\    
-   /  `--'  \   
-  /          \  
- /            \ 
-/______________\ 
