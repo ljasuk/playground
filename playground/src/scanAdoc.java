@@ -13,11 +13,11 @@ public class scanAdoc {
 		});
 		
 		String[][] toReplace = new String[][]{
-				{
+				{	//Strings to be replaced
 					"NDP 3.3",
 					"3.3"
 				},
-				{
+				{	//Replacement strings
 					"NDP {sys: cat ../NEXT_RELEASE}",
 					"{sys: cat ../NEXT_RELEASE}"
 				}

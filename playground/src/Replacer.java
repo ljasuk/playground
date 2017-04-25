@@ -6,6 +6,12 @@ import java.nio.file.Files;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+/**
+ * Recieves a file and pairs of strings: strings that must be replaced, and 
+ * their replacement. Writes the changes to the file if there are any, and in 
+ * that case, sets the boolean {@code modified} true.
+ * @author Gergely Kovacs
+ */
 public class Replacer {
 	private final File targetFile;
 	private final String content;
@@ -14,7 +20,7 @@ public class Replacer {
 	private final String newContent;
 	
 	/**
-	 * writes the replaced content to the file
+	 * Writes the replaced content to the file.
 	 */
 	private void writeFile(){
 		try (BufferedWriter writer = Files.newBufferedWriter(targetFile.toPath())) {
@@ -25,7 +31,7 @@ public class Replacer {
 	}
 	
 	/**
-	 * replaces all the pairs of strings in the content of the file
+	 * Replaces all the pairs of strings in the content of the file.
 	 * @return the updated content
 	 */
 	private String replace(){
@@ -37,7 +43,7 @@ public class Replacer {
 	}
 	
 	/**
-	 * checks whether the file contains anything that has to be changed
+	 * Checks whether the file contains anything that has to be changed.
 	 * @return boolean marking whether change is needed or not
 	 */
 	private boolean check(){
@@ -49,7 +55,7 @@ public class Replacer {
 	}
 
 	/**
-	 * reads the whole content of a file
+	 * Reads the whole content of a file.
 	 * @return the contents of the file as a single string
 	 */
 	private String readContent() {
@@ -89,7 +95,7 @@ public class Replacer {
 	}
 	
 	/**
-	 * static builder method
+	 * Static builder method
 	 * @param file - the file to check
 	 * @param toReplace - a multidimensional array of strings: pairs of strings
 	 * that have to be changed and the value to change to
