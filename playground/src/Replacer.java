@@ -13,6 +13,9 @@ public class Replacer {
 	private final boolean modified;
 	private final String newContent;
 	
+	/**
+	 * writes the replaced content to the file
+	 */
 	private void writeFile(){
 		try (BufferedWriter writer = Files.newBufferedWriter(targetFile.toPath())) {
 		    writer.write(newContent);
@@ -21,6 +24,10 @@ public class Replacer {
 		}
 	}
 	
+	/**
+	 * replaces all the pairs of strings in the content of the file
+	 * @return the updated content
+	 */
 	private String replace(){
 		String modified = content;
 		for (String[] pair : toReplace) {
@@ -29,6 +36,10 @@ public class Replacer {
 		return modified;
 	}
 	
+	/**
+	 * checks whether the file contains anything that has to be changed
+	 * @return boolean marking whether change is needed or not
+	 */
 	private boolean check(){
 		boolean contains = false;
 		for (String[] pair : toReplace) {
@@ -37,6 +48,10 @@ public class Replacer {
 		return contains;
 	}
 
+	/**
+	 * reads the whole content of a file
+	 * @return the contents of the file as a single string
+	 */
 	private String readContent() {
 		Scanner fileIn = null;
 		String content = null;
@@ -73,6 +88,13 @@ public class Replacer {
 		}	
 	}
 	
+	/**
+	 * static builder method
+	 * @param file - the file to check
+	 * @param toReplace - a multidimensional array of strings: pairs of strings
+	 * that have to be changed and the value to change to
+	 * @return an instance of Replacer
+	 */
 	public static Replacer newInstance(File file, String[][] toReplace) {
 		return new Replacer(File file, String[][] toReplace);
 	}

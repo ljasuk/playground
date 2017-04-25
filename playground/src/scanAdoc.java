@@ -11,6 +11,7 @@ public class scanAdoc {
 		        return name.toLowerCase().endsWith(".adoc");
 		    }
 		});
+		
 		String[][] toReplace = new String[][]{
 				{
 					"NDP 3.3",
