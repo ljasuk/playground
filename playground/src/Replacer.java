@@ -11,21 +11,22 @@ public class Replacer {
 	private final String content;
 	private final String[][] toReplace;
 	private final boolean modified;
+	private final String newContent;
 	
-	private void writeFile(String modified){
+	private void writeFile(){
 		try (BufferedWriter writer = Files.newBufferedWriter(targetFile.toPath())) {
-		    writer.write(modified);
+		    writer.write(newContent);
 		} catch (IOException x) {
 		    System.err.format("IOException: %s%n", x);
 		}
 	}
 	
-	private void replace(){
+	private String replace(){
 		String modified = content;
 		for (String[] pair : toReplace) {
 			modified = modified.replace(pair[0], pair[1]);
 		}
-		writeFile(modified);
+		return modified;
 	}
 	
 	private boolean check(){
@@ -55,7 +56,7 @@ public class Replacer {
 		return content;
 	}
 	
-	public Replacer(File file, String[][] toReplace){
+	private Replacer(File file, String[][] toReplace){
 		targetFile = file;
 		this.toReplace = toReplace;
 		content = readContent();
@@ -64,8 +65,16 @@ public class Replacer {
 			replace();
 			System.out.println(targetFile.getName());
 			modified = true;
-		} else modified = false;
-		
+			newContent = replace();
+			writeFile();
+		} else {
+			modified = false;
+			newContent = null;
+		}	
+	}
+	
+	public static Replacer newInstance(File file, String[][] toReplace) {
+		return new Replacer(File file, String[][] toReplace);
 	}
 
 	public boolean isModified() {

@@ -23,7 +23,7 @@ public class scanAdoc {
 		};
 		
 		for (File file : listOfFiles) {
-			new Replacer(file, toReplace);
+			Replacer.newInstance(file, toReplace);
 		}
 
 	}
