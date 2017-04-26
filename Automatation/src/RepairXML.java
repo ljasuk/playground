@@ -36,7 +36,7 @@ class RepairXML {
 	
 	
 	private static void repairTM(){
-		content = content.replaceFirst("..Ericsson AB", "&copy; Ericsson AB");
+		content = content.replaceFirst(">..?Ericsson AB", ">&copy; Ericsson AB");
 		if (content.contains("&acirc;&ldquor;&cent;")||content.contains("™")){
 			System.out.println("Repairing (TM)");
 			content = content.replace("&acirc;&ldquor;&cent;", "&trade;");
@@ -161,7 +161,8 @@ class RepairXML {
 			{"Ismo Paukamainen","LMFISP"},
 			{"Antti Tolonen","EANTTTO"},
 			{"Juha Ritvanen","LMFJURI"},
-			{"Juha S&auml;&auml;skilahti","LMFJSAA"}
+			{"Juha S&auml;&auml;skilahti","LMFJSAA"},
+			{"Syed Safi Ali Shah", "ESYISHH"}
 		};
 		
 		System.out.println(sig[1]);

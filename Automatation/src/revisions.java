@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.awt.Desktop;
@@ -17,6 +18,17 @@ public class revisions {
 	//private static final String directory = "E:\\xizssoo\\ecas\\doc\\";
 	//private static File target = new File("C:\\eclipse\\ecasDocs.html");
 	//private static File folder = new File("C:\\eclipse\\adoc\\");
+	private final static FilenameFilter adocExt = new FilenameFilter() {
+		public boolean accept(File dir, String name) {
+			return name.toLowerCase().endsWith(".adoc");
+		}
+	};
+	private final static FilenameFilter incExt = new FilenameFilter() {
+		public boolean accept(File dir, String name) {
+			return name.toLowerCase().endsWith(".inc");
+		}
+	};
+	
 	private static final String[] LOOK_FOR = new String[]{
 			"(TM)",
 			"NDP 3.3",
@@ -81,14 +93,14 @@ public class revisions {
 			//System.out.println("args: "+Arrays.toString(args));
 			parseArgs(args);
 		}
-		File[] listOfFiles = folder.listFiles();
+		File[] listOfFiles = folder.listFiles(incExt);
 		
 		files = new aDoc[listOfFiles.length];
 		
 		int i=0;
 		for (File file : listOfFiles) {
 			if (file.isFile()) {
-				if(!file.getName().endsWith(".adoc")) continue;
+				//if(!file.getName().endsWith(".adoc")) continue;
 				try {
 					fileInput = new Scanner(file);
 					

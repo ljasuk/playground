@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -65,7 +66,7 @@ public class Replacer {
 			fileIn = new Scanner(targetFile);
 			//System.out.println(in.useDelimiter("\\Z").hasNext());
 
-			content = fileIn.useDelimiter("\\Z").next();
+			content = (fileIn.useDelimiter("\\Z").next())+"\n";
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (NoSuchElementException e) {
@@ -78,8 +79,8 @@ public class Replacer {
 	}
 	
 	private Replacer(File file, String[][] toReplace){
-		targetFile = file;
-		this.toReplace = toReplace;
+		targetFile = new File(file.toString());
+		this.toReplace = Arrays.copyOf(toReplace, toReplace.length);
 		content = readContent();
 		
 		if (check()){

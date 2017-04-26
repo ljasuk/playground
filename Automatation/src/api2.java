@@ -47,24 +47,6 @@ class api2{
 		}
 		return line;
 	}
-	
-	private static String titleCap(String line) {
-		String[] szavak = line.split(" ");
-		final List<String> notCap = Arrays.asList(new String[] { "a", "an", "the",
-				"and", "as", "as if", "as long as", "at", "but", "by", /*"about",*/
-				"even if", "for", "from", "if", "if only", "in", "into", "like",
-				"near", "now that", "nor", "of", "off", "on", "on top of",
-				"once", "onto", "or", "out of", "over", "past", "so", "so that",
-				"than", "that", "till", "to", "up", "upon", "with", "when",
-				"yet" });
-		for (int i = 0; i < szavak.length; i++) {
-			if (!notCap.contains(szavak[i]) || i == 0) {
-				szavak[i] = szavak[i].substring(0, 1).toUpperCase()
-						+ szavak[i].substring(1);
-			}
-		}
-		return String.join(" ", szavak);
-	}
 
 	private static void findTitles(){
 		while(fileInput.hasNextLine()){
@@ -73,7 +55,7 @@ class api2{
 			if (line.startsWith("===")) {
 				int index = line.indexOf(" ")+1;
 				String rLine = line.substring(index).trim();
-				String rep = titleCap(rLine) + "\r\n";
+				String rep = titleCap.single(rLine) + "\r\n";
 				//System.out.println(line);
 				//if (line.contains("/")) line = line.replace("/", "a");
 				if (line.contains("{")) line = line.replace("{", "\\{");

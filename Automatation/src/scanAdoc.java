@@ -11,6 +11,16 @@ import java.util.Scanner;
 public class scanAdoc {
 	private static File folder = new File("E:\\xkovger\\ecas\\doc\\");
 	//private static File FOLDER = new File("C:\\eclipse\\adoc\\");
+	private final static FilenameFilter adocExt = new FilenameFilter() {
+		public boolean accept(File dir, String name) {
+			return name.toLowerCase().endsWith(".adoc");
+		}
+	};
+	private final static FilenameFilter incExt = new FilenameFilter() {
+		public boolean accept(File dir, String name) {
+			return name.toLowerCase().endsWith(".inc");
+		}
+	};
 
 	public static void main(String[] args) {
 		
@@ -35,11 +45,7 @@ public class scanAdoc {
 		in.close();
 		
 		// read the folder and filter for .adoc extension
-		File[] listOfFiles = folder.listFiles(new FilenameFilter() {
-		    public boolean accept(File dir, String name) {
-		        return name.toLowerCase().endsWith(".adoc");
-		    }
-		});
+		File[] listOfFiles = folder.listFiles(incExt);
 		
 		// define strings to be replaced, and replacements
 		String[][] toReplace = new String[][]{
