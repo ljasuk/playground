@@ -53,7 +53,7 @@ public class Approver {
 		System.err.println("endIndex2: "+endIndex);
 		String rev = text.substring(beginIndex, endIndex);
 		System.err.println("rev: "+rev);
-		text.replaceFirst("<rev>.+?</rev>", rev);
+		text.replaceFirst("<rev>.+?</rev>", ("<rev>"+rev+"</rev>"));
 		return text;
 	}
 	
@@ -64,7 +64,7 @@ public class Approver {
 		text = text.replace("<date>.*?</date>", "<date><y>2017</y><m>04</m><d>27</d></date>");
 		if (text.contains("dd.mm.yyyy")) text = removeRev(text);
 		
-		
+		System.err.println(text.substring(0, 4500));
 		return text;
 	}
 	
