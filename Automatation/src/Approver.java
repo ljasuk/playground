@@ -53,7 +53,7 @@ public class Approver {
 		System.err.println("endIndex2: "+endIndex);
 		String rev = text.substring(beginIndex, endIndex);
 		System.err.println("rev: "+rev);
-		text.replaceFirst("<rev>.+?</rev>", ("<rev>"+rev+"</rev>"));
+		text = text.replaceFirst("<rev>.+?</rev>", ("<rev>"+rev+"</rev>"));
 		return text;
 	}
 	
