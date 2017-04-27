@@ -31,16 +31,14 @@ public class revisions {
 	
 	private static final String[] LOOK_FOR = new String[]{
 			"(TM)",
-			"NDP 3.3",
-			"NDP {sys: cat ../NEXT_RELEASE}",
-			"NDP 3.4"
+			"NDP 3",
+			"dd.mm.yyyy"
 	};
 	
 	private static final String[] ABBREV = new String[]{
 			"(TM)",
-			"NDP",
-			"NDP2",
-			"N3.4"
+			"NDP 3",
+			"nextR"
 	};
 	
 	private static void write(PrintWriter cout, int x) {
@@ -93,7 +91,7 @@ public class revisions {
 			//System.out.println("args: "+Arrays.toString(args));
 			parseArgs(args);
 		}
-		File[] listOfFiles = folder.listFiles(incExt);
+		File[] listOfFiles = folder.listFiles(adocExt);
 		
 		files = new aDoc[listOfFiles.length];
 		
@@ -160,7 +158,7 @@ public class revisions {
 			table.append("<td>"+title+"</td>\n");
 			table.append("<td>"+type+"</td>\n");
 			table.append("<td>"+docNo+"</td>\n");
-			table.append("<td>"+rev+"</td>\n");
+			table.append("<td>"+checkRev(rev)+"</td>\n");
 			for (boolean f : found) {
 				table.append("<td>"+(f ? "X" : "")+"</td>\n");
 			}
@@ -168,7 +166,17 @@ public class revisions {
 			
 			return table.toString();
 		}
-
+		
+		private String checkRev(String revision){
+			char[] skipLetters = new char[]{'I','O','Q','R','W'};
+			boolean OK = true;
+			for (char letter : skipLetters) {
+				if (revision.indexOf(letter)>=0) OK = false;
+			}
+			if (OK) return revision; else return ("<b>"+revision+"</b>");
+			
+		}
+		
 		public synchronized String getTableLine() {
 			return tableLine;
 		}

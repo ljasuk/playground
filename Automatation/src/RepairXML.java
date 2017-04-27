@@ -33,14 +33,42 @@ class RepairXML {
 		}
 	}
 	
+	private static void emptyReference(){
+		content = content.replaceFirst("(<reference xml:id=\"references\">)\n(</reference>)",
+				"$1<reference-list><rf-subsection></rf-subsection></reference-list>$2");
+	}
 	
+	private static void figInTp(){
+		content = content.replaceAll("(?s)<tp><figure.+?(<graphics.+?/>).*?</figure>",
+				"<tp>$1");
+	}
+	
+	private static void figInParagraph(){
+		content = content.replaceAll("(?s)<p>Figure \\d\\.\\s(.*?)(<figure.+?/>).+?</p>",
+				"$2"+"\n<caption>"+"$1"+"</caption></figure>");
+	}
+	
+	private static void emphResourceID(){
+		content = content.replaceAll("<emph.*?>(<resource-id.+?/resource-id>)</emph>", "$1");
+	}
 	
 	private static void repairTM(){
-		content = content.replaceFirst(">..?Ericsson AB", ">&copy; Ericsson AB");
-		if (content.contains("&acirc;&ldquor;&cent;")||content.contains("™")){
-			System.out.println("Repairing (TM)");
-			content = content.replace("&acirc;&ldquor;&cent;", "&trade;");
-			content = content.replace("™", "&trade;");
+		content = content.replaceFirst("p>.+?Ericsson AB", "p>&copy; Ericsson AB");
+		if (content.contains("�")){
+			System.out.println("Repairing (�)");
+			content = content.replace("’", "&rsquo;");	// apostrophe
+			content = content.replace("→", "&rarr;");		// right arrow
+			//content = content.replace("&acirc;&ldquor;&cent;", "&trade;");
+			content = content.replace("™", "&trade;");	// trademark mark
+			content = content.replace("®", "&reg;");		// R in circle
+			content = content.replace("├", "&boxvr;");	// tree line T
+			content = content.replace("─", "&boxh;");		// tree line horizontal
+			content = content.replace("│", "&boxv;");		// tree line vertical
+			content = content.replace("└", "&boxur;");	// tree corner UP-RIGHT
+			
+			content = content.replace("—", "&mdash;");	// em dash
+			content = content.replace(" ", " ");			// spaces next to em dash
+			System.out.println((content.contains("�")) ? "Could not repair \"�\"" : "Removed all \"�\"");
 		}		
 	}
 	
@@ -69,7 +97,7 @@ class RepairXML {
 		return list;
 	}
 	
-	private static void substeps(){
+	private static void substeps() throws StringIndexOutOfBoundsException{
 		int cursor = 0;
 		String oTag="<list type=\"numeric";
 		String cTag = "</list>";
@@ -343,8 +371,17 @@ class RepairXML {
 		addSignature();
 		removeColwidth();
 		figInP();
-		substeps();
+		try {
+			substeps();
+		} catch (StringIndexOutOfBoundsException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		repairTM();
+		emphResourceID();
+		figInParagraph();
+		figInTp();
+		emptyReference();
 		writeFile();
 		
 		
