@@ -3,11 +3,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
 
 public class Approver {
 	private final File targetFile;
@@ -27,44 +27,55 @@ public class Approver {
 		if (text.contains("�")){
 			System.out.println("Repairing (�)");
 			text = text.replace("’", "&rsquo;");	// apostrophe
-			text = text.replace("→", "&rarr;");		// right arrow
-			//content = content.replace("&acirc;&ldquor;&cent;", "&trade;");
+			text = text.replace("→", "&rarr;");	// right arrow
 			text = text.replace("™", "&trade;");	// trademark mark
 			text = text.replace("®", "&reg;");		// R in circle
 			text = text.replace("├", "&boxvr;");	// tree line T
-			text = text.replace("─", "&boxh;");		// tree line horizontal
-			text = text.replace("│", "&boxv;");		// tree line vertical
+			text = text.replace("─", "&boxh;");	// tree line horizontal
+			text = text.replace("│", "&boxv;");	// tree line vertical
 			text = text.replace("└", "&boxur;");	// tree corner UP-RIGHT
-			
 			text = text.replace("—", "&mdash;");	// em dash
-			text = text.replace(" ", " ");			// spaces next to em dash
+			text = text.replace(" ", " ");		// spaces next to em dash
 			System.out.println((text.contains("�")) ? "Could not repair \"�\"" : "Removed all \"�\"");
 		}
 		return text;
 	}
 	
 	private String removeRev(String text){
-		text = text.replaceFirst("<row>.+?dd\\.mm\\.yyyy.+?</row>", "");
-		int endIndex = text.lastIndexOf("Updates for ECAS") - 85;
-		System.err.println("endIndex: "+endIndex);
-		int beginIndex = text.substring(0, endIndex).lastIndexOf("<tp>") +4;
-		System.err.println("beginIndex: "+beginIndex);
-		endIndex = text.substring(0, endIndex).lastIndexOf("</tp>");
-		System.err.println("endIndex2: "+endIndex);
-		String rev = text.substring(beginIndex, endIndex);
-		System.err.println("rev: "+rev);
+		text = text.replaceFirst("(?s)<row>.{1,200}yyyy.+?</row>", "");
+		String rev = "";
+		Matcher revMatcher = Pattern.compile("<tp>([A-Z]{1,2})</tp>").matcher(text);
+		while (revMatcher.find()) rev = revMatcher.group(1);
+		//System.out.println(rev);
 		text = text.replaceFirst("<rev>.+?</rev>", ("<rev>"+rev+"</rev>"));
+		System.out.println(targetFile.getName()+": "+rev);
 		return text;
 	}
 	
 	private String modify(String text){
-		text = text.replaceAll("new-page-right=\".*?\"", 
+		text = text.replaceFirst("new-page-right=\".*?\"", 
 				"new-page-right=\"npr-no\"");
-		text = text.replace("<rev>P(.+?)\\d</rev>", "<rev></rev>");
-		text = text.replace("<date>.*?</date>", "<date><y>2017</y><m>04</m><d>27</d></date>");
-		if (text.contains("dd.mm.yyyy")) text = removeRev(text);
+		text = text.replaceFirst("<rev>P(.+?)\\d</rev>", "<rev>$1</rev>");
 		
-		System.err.println(text.substring(0, 4500));
+		LocalDateTime now = LocalDateTime.now();
+		int year = now.getYear();
+
+		String month = String.format("%02d", now.getMonthValue());
+		String day = String.format("%02d", now.getDayOfMonth());
+
+		text = text.replaceFirst("<date>.*?</date>", 
+				"<date><y>"+year+"</y><m>"+month+"</m><d>"+day+"</d></date>");
+		text = text.replace("<approved-by approved=\"no\">","<approved-by approved=\"yes\">");
+		text = text.replaceFirst("<subtitle>.*?</subtitle>","<subtitle>Ericsson Certificate Administration Server</subtitle>");
+		text = text.replaceFirst("<confidentiality.+?/>","<confidentiality class=\"ericsson-internal\"/>");
+		
+		text = text.replaceFirst("(?s)<drafted-by>.*?</drafted-by>",
+				"<drafted-by>\n<person>\n<name>Juha Ritvanen</name>\n"+
+						"<signature>LMFJURI</signature>\n<location/>"+
+						"<company/><department/>\n</person>\n</drafted-by>");
+		if (text.contains("yyyy")) text = removeRev(text);
+		
+		//System.err.println(text.substring(0, 5300));
 		return text;
 	}
 	
@@ -93,4 +104,5 @@ public class Approver {
 		newContent = repairTM(modify(content));
 		writeFile();
 	}
+	
 }
