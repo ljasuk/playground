@@ -33,6 +33,20 @@ class RepairXML {
 		}
 	}
 	
+	private static void tableToGrid(){
+		Matcher tableMatcher = Pattern.compile("(?s)<list(.+?)</list>").matcher(content);
+		while(tableMatcher.find()){
+			String list = tableMatcher.group(1);
+			if (list.contains("<table")) {
+				String grid = list.replace("<caption></caption>", "");
+				grid = grid.replace("<caption/>", "");
+				grid = grid.replaceAll("<table.*?>", "<grid frame =\"all\">");
+				grid = grid.replace("</table>", "</grid>");
+				content = content.replace(list, grid);
+			}
+		}
+	}
+	
 	private static void emptyReference(){
 		content = content.replaceFirst("(<reference xml:id=\"references\">)\n(</reference>)",
 				"$1<reference-list><rf-subsection></rf-subsection></reference-list>$2");
@@ -65,7 +79,8 @@ class RepairXML {
 			content = content.replace("─", "&boxh;");		// tree line horizontal
 			content = content.replace("│", "&boxv;");		// tree line vertical
 			content = content.replace("└", "&boxur;");	// tree corner UP-RIGHT
-			
+			 
+			content = content.replace("…", "&mldr;");		// three dots
 			content = content.replace("—", "&mdash;");	// em dash
 			content = content.replace(" ", " ");			// spaces next to em dash
 			System.out.println((content.contains("�")) ? "Could not repair \"�\"" : "Removed all \"�\"");
@@ -382,6 +397,7 @@ class RepairXML {
 		figInParagraph();
 		figInTp();
 		emptyReference();
+		tableToGrid();
 		writeFile();
 		
 		

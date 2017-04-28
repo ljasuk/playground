@@ -31,14 +31,14 @@ public class revisions {
 	
 	private static final String[] LOOK_FOR = new String[]{
 			"(TM)",
-			"NDP 3",
-			"dd.mm.yyyy"
+			"dd.mm.yyyy",
+			"Glossary of Terms and Acronyms"
 	};
 	
 	private static final String[] ABBREV = new String[]{
 			"(TM)",
-			"NDP 3",
-			"nextR"
+			"nextR",
+			"glossary"
 	};
 	
 	private static void write(PrintWriter cout, int x) {
