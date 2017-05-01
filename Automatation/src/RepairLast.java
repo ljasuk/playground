@@ -1,10 +1,16 @@
 import java.io.File;
+import java.io.FilenameFilter;
 
 public class RepairLast {
 	private final File targetFile;
+	private final static FilenameFilter XML_EXT = new FilenameFilter() {
+		public boolean accept(File dir, String name) {
+			return name.toLowerCase().endsWith(".xml");
+		}
+	};
 	
 	private File lastFileModified(File workDir) {
-		File[] files = workDir.listFiles();
+		File[] files = workDir.listFiles(XML_EXT);
 		long lastMod = Long.MIN_VALUE;
 		File choice = null;
 		for (File file : files) {

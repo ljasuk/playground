@@ -208,7 +208,7 @@ class RepairClass {
 		endIndex = text.indexOf("<location", beginIndex);
 
 		text = text.substring(0, beginIndex) + "<name>" + SIGNATURES[choice][0] + "</name><signature>"
-				+ SIGNATURES[choice][1] + "</signature>" + text.substring(endIndex);
+				+ SIGNATURES[choice][1] + "</signature>\n" + text.substring(endIndex);
 
 		in.close();
 		return text;
@@ -297,7 +297,7 @@ class RepairClass {
 			byte[] data = new byte[(int) targetFile.length()];
 			fis.read(data);
 			fis.close();
-			text = new String(data, "UTF-16");
+			text = new String(data, "UTF-8");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
