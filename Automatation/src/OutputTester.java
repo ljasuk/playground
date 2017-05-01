@@ -1,6 +1,7 @@
 import java.io.BufferedWriter;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -14,18 +15,19 @@ import java.util.stream.Collectors;
 
 public class OutputTester {
 	private static String content;
-	private static File target;
+	private static File targetFile;
 
 	private static String targetPath;
 	//private static long fileSize = 0;
 	
 	private static void writeFile(){
 		long lengthBefore = targetFile.length();
-		try (BufferedWriter writer = Files.newBufferedWriter(target.toPath())) {
+		try (BufferedWriter writer = Files.newBufferedWriter(targetFile.toPath())) {
 		    writer.write(content);
 		} catch (IOException x) {
 		    System.err.format("IOException: %s%n", x);
 		}
+		System.out.println(targetFile.getName());
 		System.out.println("\nSize difference: " + (targetFile.length() - lengthBefore));
 		System.out.println("\nDONE");
 		try {
@@ -63,11 +65,11 @@ public class OutputTester {
 		try {
 			FileInputStream fis = new FileInputStream(targetPath);
 			//fileSize = target.length();
-			byte[] data = new byte[(int) target.length()];
+			byte[] data = new byte[(int) targetFile.length()];
 			fis.read(data);
 			fis.close();
 
-			text = new String(data, "UTF-8");
+			text = new String(data, "binary");
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -99,13 +101,18 @@ public class OutputTester {
 	}
 	
 	public static void main(String[] args) {
-		File folder = "/media/koger/New Volume/sheet/";
+		File folder = new File ("/media/koger/New Volume/testFolder/");
 		// read the folder and filter for .adoc extension
-		File[] listOfFiles = folder.listFiles();
+		File[] listOfFiles = folder.listFiles(new FileFilter() {
+		    @Override
+		    public boolean accept(File pathname) {
+
+		        return pathname.isFile();
+		    }});
 		
 		// sending all the files to the replacer
 		for (File file : listOfFiles) {
-			target =  file;
+			targetFile =  file;
 			targetPath = file.getPath();
 			content = byteRead();
 			writeFile();
