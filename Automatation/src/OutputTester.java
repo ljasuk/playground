@@ -16,123 +16,96 @@ import java.util.stream.Collectors;
 public class OutputTester {
 	private static String content;
 	private static File targetFile;
-
 	private static String targetPath;
-	//private static long fileSize = 0;
-	
-	private static void writeFile(){
+
+	private static void writeFile() {
 		long lengthBefore = targetFile.length();
-		try (BufferedWriter writer = Files.newBufferedWriter(targetFile.toPath())) {
-		    writer.write(content);
-		} catch (IOException x) {
-		    System.err.format("IOException: %s%n", x);
-		}
 		System.out.println(targetFile.getName());
+		System.out.println(targetFile.length());
+		try (BufferedWriter writer = Files.newBufferedWriter(targetFile.toPath())) {
+			writer.write(content);
+		} catch (IOException x) {
+			System.err.format("IOException: %s%n", x);
+		}
+		System.out.println(targetFile.length());
+
 		System.out.println("\nSize difference: " + (targetFile.length() - lengthBefore));
 		System.out.println("\nDONE");
 		try {
 			Thread.sleep(500);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
-	private static String scanFile(){
+
+	private static String scanFile() {
 		File target = new File(targetPath);
-		//fileSize = target.length();
+		// fileSize = target.length();
 		String text = "";
 		System.out.println(target.exists());
 		Scanner fileIn = null;
 		try {
 			fileIn = new Scanner(target);
-			//System.out.println(in.useDelimiter("\\Z").hasNext());
-
 			text = fileIn.useDelimiter("\\Z").next();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (NoSuchElementException e) {
 			e.printStackTrace();
-			// System.out.println(e.getMessage());
 		} finally {
 			fileIn.close();
 		}
 		return text;
 	}
-	
-	private static String byteRead(){
+
+	private static String byteRead() {
 		String text = null;
 		try {
 			FileInputStream fis = new FileInputStream(targetPath);
-			//fileSize = target.length();
 			byte[] data = new byte[(int) targetFile.length()];
 			fis.read(data);
 			fis.close();
-
-			text = new String(data, "binary");
+			text = new String(data, "iso-8859-1");
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return text;
 	}
-	
-	private static String buffRead(){
+
+	private static String buffRead() {
 		Charset charset = Charset.forName("UTF-16");
 		String text = "";
-		//File target = new File(targetPath);
 		Path tp = Paths.get(targetPath);
 		System.err.println(tp.toFile().exists());
 		try (BufferedReader reader = Files.newBufferedReader(tp, charset)) {
-		    /*String line = null;
-		    while ((line = reader.readLine()) != null) {
-		        System.out.println(line);
-		    }*/
-		    //text = reader.;
-		    text =  reader.lines().collect(Collectors.joining());
+			text = reader.lines().collect(Collectors.joining());
 		} catch (IOException x) {
-		    System.err.format("IOException: %s%n", x);
+			System.err.format("IOException: %s%n", x);
 		}
-		
+
 		return text;
 	}
-	
-	public static void main(String[] args) {
-		File folder = new File ("/media/koger/New Volume/testFolder/");
-		// read the folder and filter for .adoc extension
-		File[] listOfFiles = folder.listFiles(new FileFilter() {
-		    @Override
-		    public boolean accept(File pathname) {
 
-		        return pathname.isFile();
-		    }});
-		
-		// sending all the files to the replacer
+	public static void main(String[] args) {
+		File folder = new File("/media/koger/New Volume/testFolder/");
+		// read the files in the folder
+		File[] listOfFiles = folder.listFiles(new FileFilter() {
+			@Override
+			public boolean accept(File pathname) {
+				return pathname.isFile();
+			}
+		});
+
+		// sending all the files to the read and write
 		for (File file : listOfFiles) {
-			targetFile =  file;
+			targetFile = file;
 			targetPath = file.getPath();
 			content = byteRead();
+			// System.out.println(content);
 			writeFile();
 		}
-		
-		//targetPath = "/media/koger/New Volume/Downloads/13938237_494210704109654_1447229537017601039_o.jpg";
-		//target = new File(targetPath);
-		//System.out.println(byteRead());
-		//content = byteRead();
-		//System.out.println(buffRead());
-		
-		
-		//System.out.println(content);
-		
-		//writeFile();
-		//System.out.println(target.getName()+"\nDifference: " + (target.length() - fileSize));
-		
-		
+
 	}
-	
-	
-	
+
 }

@@ -1,16 +1,9 @@
-//import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-//import java.io.FileFilter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-//import java.io.Reader;
 import java.util.Arrays;
-//import java.io.IOException;
-//import java.io.InputStream;
-//import java.io.InputStreamReader;
 import java.nio.file.Files;
-//import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.regex.*;
@@ -23,7 +16,6 @@ class RepairXML {
 	private static String rev;
 	private static String[] sig = new String[2];
 	private static Scanner in;
-	//private static Reader CLInput;
 	
 	private static void writeFile(){
 		try (BufferedWriter writer = Files.newBufferedWriter(targetFile.toPath())) {
@@ -68,11 +60,10 @@ class RepairXML {
 	
 	private static void repairTM(){
 		content = content.replaceFirst("p>.+?Ericsson AB", "p>&copy; Ericsson AB");
-		if (content.contains("â")){
-			System.out.println("Repairing (â)");
+		if (content.contains("ï¿½")){
+			System.out.println("Repairing (ï¿½)");
 			content = content.replace("â€™", "&rsquo;");	// apostrophe
 			content = content.replace("â†’", "&rarr;");		// right arrow
-			//content = content.replace("&acirc;&ldquor;&cent;", "&trade;");
 			content = content.replace("â„¢", "&trade;");	// trademark mark
 			content = content.replace("Â®", "&reg;");		// R in circle
 			content = content.replace("â”œ", "&boxvr;");	// tree line T
@@ -83,7 +74,7 @@ class RepairXML {
 			content = content.replace("â€¦", "&mldr;");		// three dots
 			content = content.replace("â€”", "&mdash;");	// em dash
 			content = content.replace("â€‰", " ");			// spaces next to em dash
-			System.out.println((content.contains("â")) ? "Could not repair \"â\"" : "Removed all \"â\"");
+			System.out.println((content.contains("ï¿½")) ? "Could not repair \"ï¿½\"" : "Removed all \"ï¿½\"");
 		}		
 	}
 	
