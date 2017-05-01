@@ -32,8 +32,7 @@ code="en"/><rev>PA5</rev>
 <title>HSS Installation Instruction</title>
 <subtitle>Ericsson Home Subscriber Server</subtitle>
 <drafted-by>
-<person>
-<name>Gergely Kovacs</name><signature>XKOVGER</signature>
+<person><name>Gergely Kovacs</name><signature>XKOVGER</signature>
 <location></location><company>XSN</company><department></department>
 </person>
 </drafted-by>
@@ -254,7 +253,7 @@ suppress="online"><emph type="low">HSS Reference Configuration</emph
 <list>
 <list-item><p>For nodes with 2 Dicos processors in a subrack the ntd
 templates needed are located in io2: <input>$TSP_DISTRIBUTION_ROOT/config/ntd/ims64/6TP</input
->. </p>
+>.</p>
 <p>The following Dicos profile is available: Dicos_TP_Diameter_SCTP_FE.
 See <xref linkend="Tabla2"/> for further details.</p>
 </list-item>
@@ -262,7 +261,7 @@ See <xref linkend="Tabla2"/> for further details.</p>
 for Front End deployment in a subrack available in the system, the
 ntd templates needed are located in io2: <input>$TSP_DISTRIBUTION_ROOT/config/ntd/ims64/small</input
 >.</p>
-<p> The following Dicos profiles are available: Dicos_TP_Diameter,
+<p>The following Dicos profiles are available: Dicos_TP_Diameter,
 Dicos_TP_Diameter_SCTP_FE. See <xref linkend="Tabla3"/> for further
 details.</p>
 </list-item>
@@ -287,8 +286,8 @@ suppress="online"><emph type="low">Licensing Management in HSS</emph
 </list>
 <table xml:id="Tabla2">
 <caption>NSP6.1 (2 Dicos Processors in a subrack for Classic Deployment)</caption>
-<tgroup cols="2"><colspec colname="COLSPEC2" colwidth="1.00*"/><colspec
-colname="COLSPEC3" colwidth="1.15*"/>
+<tgroup cols="2"><colspec colname="COLSPEC2"/><colspec
+colname="COLSPEC3"/>
 <tbody><row>
 <entry><tp><emph type="medium">Configuration</emph></tp>
 </entry>
@@ -312,8 +311,8 @@ colname="COLSPEC3" colwidth="1.15*"/>
 </table>
 <table xml:id="Tabla3">
 <caption>NSP6.1 (3 or more Dicos Processors in a subrack)</caption>
-<tgroup cols="2"><colspec colname="col1" colwidth="0.92*"/><colspec
-colname="col2" colwidth="1.08*"/>
+<tgroup cols="2"><colspec colname="col1"/><colspec
+colname="col2"/>
 <tbody><row>
 <entry><tp><emph type="medium">Configuration</emph></tp>
 </entry>
@@ -338,8 +337,8 @@ colname="col2" colwidth="1.08*"/>
 <table xml:id="Tabla4">
 <caption>NSP6.1 (8 or more Dicos Processors in a subrack or more than
 one subrack) </caption>
-<tgroup cols="2"><colspec colname="COLSPEC2" colwidth="1.00*"/><colspec
-colname="COLSPEC3" colwidth="1.15*"/>
+<tgroup cols="2"><colspec colname="COLSPEC2"/><colspec
+colname="COLSPEC3"/>
 <tbody><row>
 <entry><tp><emph type="medium">Configuration</emph></tp>
 </entry>
@@ -362,7 +361,7 @@ colname="COLSPEC3" colwidth="1.15*"/>
 </tgroup>
 </table>
 <list>
-<list-item><p>Network Configuration for Geographic Redundancy. </p>
+<list-item><p>Network Configuration for Geographic Redundancy.</p>
 <p>The network configuration required to install Geographical Redundancy
 shown in <wrap suppress="print"><atict:delm user="s23433"
 time="1474358431"/><ulink xlink:type="simple"
@@ -402,7 +401,7 @@ See <xref linkend="Table5"/> for further details.</p>
 <p>For bigger nodes with more than 1 subrack, the ntd templates are
 located in io2: <input>$TSP_DISTRIBUTION_ROOT/<nl/>config/ntd/ims64</input
 >. The following Dicos profiles are available: Dicos_TP_NetRed_Diameter,
-SS7_SCTP_FE_NetRed . See <xref linkend="Tabla6"/> for further details. </p>
+SS7_SCTP_FE_NetRed . See <xref linkend="Tabla6"/> for further details.</p>
 </list-item>
 </list>
 <table xml:id="Table5">
@@ -582,7 +581,7 @@ xlink:title="Configuring SS7, ITU, China or TTC TCAP"
 xmlns:xlink="http://www.w3.org/1999/xlink"></ulink></wrap><atict:del
 user="s23433" time="1474358477"><wrap suppress="online"><emph type="low"
 >Configuring SS7, ITU, China or TTC TCAP</emph>, <xref linkend="SS7TCAP"
-/></wrap></atict:del>. </p>
+/></wrap></atict:del>.</p>
 <p>For any SCTP configuration, refer to <wrap suppress="print"><atict:delm
 user="s23433" time="1474358485"/><ulink xlink:type="simple"
 xlink:href="urn:x-ericsson:r2:reg-doc:*1543-*:*:*?title=Configuring SS7, SCTP"
@@ -659,7 +658,7 @@ Indicator</p>
 <list-item><p>Entityset = Prim:RemoteSPC</p>
 </list-item>
 </list>
-<p>Outgoing 2: Needed for SCCP segmentation. </p>
+<p>Outgoing 2: Needed for SCCP segmentation.</p>
 <list>
 <list-item><p>Nature of Address = International Number Numbering Plan
 = 1 (E163/E164 ISDN)</p>
@@ -678,7 +677,7 @@ Indicator</p>
 </list>
 <p>Outgoing 3: this is used for IMS scenario in roaming awareness
 functionality and IMS AKA Authentication, for EPC scenario in HLR
-authentication (EPC External Authentication) and SAE Mobility (IRAT) </p>
+authentication (EPC External Authentication) and SAE Mobility (IRAT)</p>
 <list>
 <list-item><p>Nature of Address = International Number</p>
 </list-item>
@@ -1127,14 +1126,14 @@ user="s23433" time="1474358677"><wrap suppress="online"><emph type="low"
 linkend="EPCTmodification"/>.</p>
 <step-list>
 <p>In case SCTP data is not defined for your site, a dummy configuration
-file is mandatory. </p>
+file is mandatory.</p>
 <sl-item><p>Rename<resource-id>/opt/telorb/axe/tsp/ss7/cnf</resource-id
-> directory if it exists </p>
+> directory if it exists</p>
 <p>&lt;IO2>:telorb> <input>cd /opt/telorb/axe/tsp/ss7</input></p>
 <p>&lt;IO2>:telorb> <input>mv cnf cnf_ini</input></p>
 </sl-item>
 <sl-item><p>Copy <resource-id>CNF_SCTP.tgz</resource-id> file to<resource-id
->/opt/telorb/axe/tsp/ss7</resource-id> </p>
+>/opt/telorb/axe/tsp/ss7</resource-id></p>
 <p>&lt;IO2>:telorb> <input>cd /opt/telorb/axe/ims/hss_necp_&lt;r_state></input
 ></p>
 <p>&lt;IO2>:telorb> <input>cp -r CNF_SCTP.tgz /opt/telorb/axe/tsp/ss7</input
@@ -1210,7 +1209,7 @@ and 1100 for linuxSysctl are already used, select any other free values.</p>
 <p>TYPE IntelPc</p>
 <p>IN CwosCommonPool,CwosDbnPool,</p>
 <p>DicosCommonPool,DicosPlgLoaderPool,</p>
-<p>CwosClusterControlPool, </p>
+<p>CwosClusterControlPool,</p>
 <p>PmFPool,</p>
 <p>SS7PcfMasterPool, SS7ManagementPool,</p>
 <p>SS7NetworkManagementPool;</p>
@@ -1244,12 +1243,12 @@ continue with next bullet, otherwise verify that <resource-id>CwosIPserverPool</
 > is added to <resource-id>PROCESSOR PROFILE SS7_SCTP_FE</resource-id
 >. If not, modify it as bellow:</p>
 <p>PROCESSOR PROFILE SS7_SCTP_FE</p>
-<p> TYPE IntelPc </p>
+<p>TYPE IntelPc</p>
 <p>IN CwosCommonPool,CwosDbnPool,</p>
-<p> DicosCommonPool,CwosIPserverPool,</p>
-<p> PmFPool,NMCommonPool,</p>
-<p> DIAStackPool,DIAStackProcPool,</p>
-<p> SS7PcfSlavePool;</p>
+<p>DicosCommonPool,CwosIPserverPool,</p>
+<p>PmFPool,NMCommonPool,</p>
+<p>DIAStackPool,DIAStackProcPool,</p>
+<p>SS7PcfSlavePool;</p>
 </sl-item>
 <sl-item><p>Save the file.</p>
 </sl-item>
@@ -1307,12 +1306,12 @@ continue with step 1 to modify redundant variables.</p>
 <p>&lt;IO2>:telorb> <input>vi E10cwos_initial.epct</input></p>
 <p>Add the following lines in INITIAL DATA in order to set IP forwarding
 on Dicos and Linux, respectively for IPv4:</p>
-<p>dicosSysctl_&lt;xxxx> = "net.inet.ip.forwarding=1" </p>
+<p>dicosSysctl_&lt;xxxx> = "net.inet.ip.forwarding=1"</p>
 <p>linuxSysctl_&lt;xxxx> = "net.ipv4.ip_forward=1" and save</p>
 <p>Add the following lines in INITIAL DATA in order to set IP forwarding
 on Dicos and Linux, respectively for IPv6:</p>
 <p>dicosSysctl_&lt;xxxx> = "net.inet6.ip6.forwarding=1"</p>
-<p>linuxSysctl_&lt;xxxx> = "net.ipv6.ip_forward=1" </p>
+<p>linuxSysctl_&lt;xxxx> = "net.ipv6.ip_forward=1"</p>
 <p>and save</p>
 <p>The default value for DdbtdTrApplierMaxBacklog is set to 1 GB,
 but note that such value might be different depending on the Dimensioning
@@ -1379,7 +1378,7 @@ IO.</p>
 <p>Check the value of the <emph>st</emph> field in the output. On
 the primary IO the <emph>st</emph> field should be <output>Primary/Secondary</output
 >. On the secondary IO the <emph>st</emph> field should be <output
->Secondary/Primary</output>. </p>
+>Secondary/Primary</output>.</p>
 </sl-item>
 <sl-item><p>Open a new terminal:</p>
 <p>&lt;IO2>:telorb><input>xterm &amp;</input></p>
@@ -1405,7 +1404,7 @@ activated need to be specified. HSI is not an option within DIA_INSTALLER_STACK
 because as it is mandatory, it is always installed as DIA_INSTALLER_0.</p>
 <p>-r : yes or no for Redundancy function, no as default value.</p>
 <p>-t : This is an optional parameter. To see TSP_VERSION value use
-next command in the cabinet: </p>
+next command in the cabinet:</p>
 <p><input># eprtsetup</input></p>
 <p><input># epgetattr Version ANA90106</input></p>
 <p>An example:</p>
@@ -1514,8 +1513,8 @@ directory. This step must be done in both IOs.</p>
 <p>&lt;IO>:telorb> <input>cd </input></p>
 <p>&lt;IO>:telorb> <input>vi .bashrc</input></p>
 <p>Add the following lines in order to have access to HSS HealthCheck
-scripts: </p>
-<p>export PATH=/opt/telorb/axe/runtimes/ServicePlatform/HSS/HssCommonApp_IDPG/HssCommonAppHealthCheck_IDP/scripts:$PATH </p>
+scripts:</p>
+<p>export PATH=/opt/telorb/axe/runtimes/ServicePlatform/HSS/HssCommonApp_IDPG/HssCommonAppHealthCheck_IDP/scripts:$PATH</p>
 <p>if [[ $EP_CONFIGPATH != *ServicePlatform/HSS* ]]; then</p>
 <p>export EP_CONFIGPATH=$EP_CONFIGPATH:/opt/telorb/axe/runtimes/ServicePlatform/HSS/system/conf</p>
 <p>fi</p>
@@ -1589,7 +1588,7 @@ user="s23433" time="1474358756"><wrap suppress="online"><emph type="low"
 >TSP CLI User Guide</emph>, <xref linkend="TSPCLIUserGuide"/></wrap
 ></atict:del>.</p>
 </sl-item>
-<sl-item><p>Go to configure mode </p>
+<sl-item><p>Go to configure mode</p>
 <p><input>configure</input></p>
 </sl-item>
 <sl-item><p>Set the pwdMustChange value to FALSE. Refer to <wrap
@@ -1602,14 +1601,14 @@ HSS</ulink></wrap><atict:del user="s23433" time="1474358761"><wrap
 suppress="online"><emph type="low">Licensing Management in HSS</emph
 >, <xref linkend="LicensingM"/></wrap></atict:del>.</p>
 <p><input>set Node TspPlatform TspSecurity TspAccountPolicies defaultPolicies
-=> <nl/>TspPwdPolicy default pwdMustChange FALSE</input> </p>
+=> <nl/>TspPwdPolicy default pwdMustChange FALSE</input></p>
 </sl-item>
 <sl-item><p>Commit the changes</p>
-<p><input>commit</input> </p>
+<p><input>commit</input></p>
 </sl-item>
-<sl-item><p>Exit CLI console </p>
-<p><input>exit</input> </p>
-<p><input>exit</input> </p>
+<sl-item><p>Exit CLI console</p>
+<p><input>exit</input></p>
+<p><input>exit</input></p>
 </sl-item>
 </step-list>
 <atict:del user="s23433" time="1474358780"><p>For suggestions on how
@@ -1754,7 +1753,7 @@ user="s23433" time="1474358832"><wrap suppress="online"><emph type="low"
 >SDA Fault Management Configuration Guide</emph>, <xref
 linkend="SDAFaultM"/></wrap></atict:del>.</p>
 </list-item>
-<list-item><p> For SM software, refer to <wrap suppress="print"><atict:delm
+<list-item><p>For SM software, refer to <wrap suppress="print"><atict:delm
 user="s23433" time="1474358850"/><ulink xlink:type="simple"
 xlink:href="urn:x-ericsson:r2:reg-doc:*1553-*:*:*?title=SM Fault Management Configuration Guide"
 xlink:title="SM Fault Management Configuration Guide"
@@ -1763,7 +1762,7 @@ user="s23433" time="1474358831"><wrap suppress="online"><emph type="low"
 >SM Fault Management Configuration Guide</emph>, <xref
 linkend="SSO-FaultM"/></wrap></atict:del>.</p>
 </list-item>
-<list-item><p> For ESM software, refer to <wrap suppress="print"><atict:delm
+<list-item><p>For ESM software, refer to <wrap suppress="print"><atict:delm
 user="s23433" time="1474358848"/><ulink xlink:type="simple"
 xlink:href="urn:x-ericsson:r2:reg-doc:*1553-*:*:*?title=ESM Fault Management Configuration Guide"
 xlink:title="ESM Fault Management Configuration Guide"
@@ -1772,7 +1771,7 @@ user="s23433" time="1474358834"><wrap suppress="online"><emph type="low"
 >ESM Fault Management Configuration Guide</emph>, <xref
 linkend="ESMFault"/></wrap></atict:del>.</p>
 </list-item>
-<list-item><p> For SLF, refer to <wrap suppress="print"><atict:delm
+<list-item><p>For SLF, refer to <wrap suppress="print"><atict:delm
 user="s23433" time="1474358846"/><ulink xlink:type="simple"
 xlink:href="urn:x-ericsson:r2:reg-doc:*1553-*:*:*?title=SLF Fault Management Configuration Guide"
 xlink:title="SLF Fault Management Configuration Guide"
@@ -1782,7 +1781,7 @@ ref="2" user="s23433" time="1474358835"/><atict:del user="s23433"
 time="1474358876"><emph type="low">SLF Fault Management Configuration
 Guide</emph>, <xref linkend="SlfFault"/></atict:del></wrap>.</p>
 </list-item>
-<list-item><p> For AVG, refer to <wrap suppress="print"><atict:delm
+<list-item><p>For AVG, refer to <wrap suppress="print"><atict:delm
 user="s23433" time="1474358844"/><ulink xlink:type="simple"
 xlink:href="urn:x-ericsson:r2:reg-doc:*1553-*:*:*?title=AVG Fault Management Configuration Guide"
 xlink:title="AVG Fault Management Configuration Guide"
@@ -1791,7 +1790,7 @@ user="s23433" time="1474358837"><wrap suppress="online"><emph type="low"
 >AVG Fault Management Configuration Guide</emph>, <xref
 linkend="AvgFault"/></wrap></atict:del>.</p>
 </list-item>
-<list-item><p> For ESM software, refer to <wrap suppress="print"><atict:delm
+<list-item><p>For ESM software, refer to <wrap suppress="print"><atict:delm
 user="s23433" time="1474358842"/><ulink xlink:type="simple"
 xlink:href="urn:x-ericsson:r2:reg-doc:*1553-*:*:*?title=ESM Fault Management Configuration Guide"
 xlink:title="ESM Fault Management Configuration Guide"
@@ -1821,7 +1820,7 @@ document for the HSS release to be installed.</p>
 HSS</title>
 <p>Disk log is applicable only for monolithic deployment.</p>
 <p>By default, Disk Log is disabled and not expected to be used.</p>
-<p> To enable Disk Log, follow the OPI <wrap suppress="print"><atict:delm
+<p>To enable Disk Log, follow the OPI <wrap suppress="print"><atict:delm
 user="s23433" time="1474358884"/><ulink xlink:type="simple"
 xlink:href="urn:x-ericsson:r2:reg-doc:*1543-*:*:*?title=Disk Log Activation in HSS"
 xlink:title="Disk Log Activation in HSS"
@@ -2074,14 +2073,14 @@ node identifier.</p>
 port number.</p>
 </list-item>
 <list-item><p><resource-id>transportLayerType</resource-id>: Configure
-the transport layer according to the following options: </p>
+the transport layer according to the following options:</p>
 <list>
-<list-item><p>1 if the transport layer is TCP </p>
+<list-item><p>1 if the transport layer is TCP</p>
 </list-item>
-<list-item><p>2 if the transport layer is SCTP </p>
+<list-item><p>2 if the transport layer is SCTP</p>
 </list-item>
 <list-item><p>3 is the first try of transport layer is SCTP and then
-TCP </p>
+TCP</p>
 </list-item>
 </list>
 </list-item>
@@ -2112,16 +2111,16 @@ with the following information:</p>
 &lt;index 0>: SM zone 2 diameter stack IP address.</p>
 </list-item>
 <list-item><p>Create two times bigger number of connections than in
-SM towards ISM. </p>
+SM towards ISM.</p>
 </list-item>
 <list-item><p>Add a new <resource-id>ipAddressList</resource-id> attribute
 with the following information:</p>
-<p> &lt;index1>:SM Zone 2 diameter stack IP address for half of the
+<p>&lt;index1>:SM Zone 2 diameter stack IP address for half of the
 connections.</p>
 </list-item>
 <list-item><p>Add a new <resource-id>ipAddressList</resource-id> attribute
 with the following information:</p>
-<p> &lt;index1>:SM Zone 1 diameter stack IP address for the rest of
+<p>&lt;index1>:SM Zone 1 diameter stack IP address for the rest of
 the connections.</p>
 </list-item>
 <list-item><p>Create a <resource-id>DIA-CFG-NeighbourNode-LocalVIPNetRed</resource-id
@@ -2399,7 +2398,7 @@ HSS.</p>
 >DIA-CFG-AppRouting</resource-id> object as applications supporting
 Authentication/Authorization request, nodeid attribute is mandatory
 when action is 4 and has to be set with the identity of the Diameter
-agent (proxy or rely agents). </p>
+agent (proxy or rely agents).</p>
 <list-item><p>requestedApp: 193:16777227.</p>
 <p>action: 4 (none).</p>
 </list-item>
@@ -2550,7 +2549,7 @@ allowed in the local node configuration.</p>
 <p>This configuration is accomplished by creating as many <resource-id
 >DIA-CFG-NeighbourNode</resource-id>objects as peer nodes.</p>
 <p>For the neighbor nodes configuration, the following information
-is needed: </p>
+is needed:</p>
 <list>
 <list-item><p><resource-id>nodeId</resource-id> : neighbor Node identifier.</p>
 </list-item>
@@ -2991,14 +2990,14 @@ or ESM diameter stack IP address, if the transport layer is SCTP.</p>
 stack port number.</p>
 </list-item>
 <list-item><p><resource-id>transportLayerType</resource-id>: Configure
-the transport layer according to the following options: </p>
+the transport layer according to the following options:</p>
 <list>
-<list-item><p>1 if the transport layer is TCP </p>
+<list-item><p>1 if the transport layer is TCP</p>
 </list-item>
-<list-item><p>2 if the transport layer is SCTP </p>
+<list-item><p>2 if the transport layer is SCTP</p>
 </list-item>
 <list-item><p>3 is the first try of transport layer is SCTP and then
-TCP </p>
+TCP</p>
 </list-item>
 </list>
 </list-item>
@@ -3028,12 +3027,12 @@ ISM/ESM towards SLF.</p>
 </list-item>
 <list-item><p>Add a new <resource-id>ipAddressList</resource-id> attribute
 with the following information:</p>
-<p> &lt;index 1>:neighbor node Zone 2 diameter stack IP address for
+<p>&lt;index 1>:neighbor node Zone 2 diameter stack IP address for
 half of the connections.</p>
 </list-item>
 <list-item><p>Add a new <resource-id>ipAddressList</resource-id> attribute
 with the following information:</p>
-<p> &lt;index 1>:neighbor node Zone 1 diameter stack IP address for
+<p>&lt;index 1>:neighbor node Zone 1 diameter stack IP address for
 half of the connections.</p>
 </list-item>
 <list-item><p>Create a <resource-id>DIA-CFG-NeighbourNode-LocalVIPNetRed</resource-id
@@ -3138,13 +3137,13 @@ Authentication/Authorization request:</p>
 <list-item><p>requestedApp: 10415:16777221</p>
 <p>action: 2 (for proxy mode).</p>
 </list-item>
-<list-item><p>requestedApp:10415:16777265 </p>
+<list-item><p>requestedApp:10415:16777265</p>
 <p>action: 2 (for proxy mode).</p>
 </list-item>
-<list-item><p>requestedApp:10415:16777291 </p>
+<list-item><p>requestedApp:10415:16777291</p>
 <p>action: 2 (for proxy mode).</p>
 </list-item>
-<list-item><p>requestedApp:10415:16777251 </p>
+<list-item><p>requestedApp:10415:16777251</p>
 <p>action: 2 (for proxy mode).</p>
 </list-item>
 </list>
@@ -3279,7 +3278,7 @@ attributes of the <resource-id>HSS-ExtDbConfig</resource-id> object
 that must be properly set for ISM/SDA/AVG/SM/ESM:</p>
 <note><p>For the different modules, different objects are used as
 follows:</p>
-<p>For ISM/SDA, <resource-id>HSS-ExtDbConfig</resource-id> objectClass </p>
+<p>For ISM/SDA, <resource-id>HSS-ExtDbConfig</resource-id> objectClass</p>
 <p>For ESM, <resource-id>HSS-EsmExtDbConfiguration</resource-id> objectClass</p>
 <p>For SM, <resource-id>HSS-SmExtDbConfiguration</resource-id> objectClass</p>
 <p>For AVG, <resource-id>HSS-AvgExtDbConfiguration</resource-id> objectClass</p>
@@ -3312,7 +3311,7 @@ type="medium">&lt; Authentication Method></emph></p>
 <list-item><p><resource-id>HSS-ExtDbConfigRootDnList</resource-id
 >:1:ou=Associations, <emph type="medium">&lt;rootDN></emph></p>
 <p><resource-id>HSS-ExtDbConfigRootDnList:</resource-id>:2:ou=multiSCs,<emph
-type="medium">&lt;rootDN></emph> </p>
+type="medium">&lt;rootDN></emph></p>
 <p><resource-id>HSS-ExtDbConfigRootDnList:</resource-id>:3:dc=impi,ou=identities,<emph
 type="medium">&lt;rootDN></emph></p>
 <p><resource-id>HSS-ExtDbConfigRootDnList:</resource-id>:4:dc=impu,ou=identities,<emph
@@ -3374,7 +3373,7 @@ Configuration Object Class.</p>
 of the <resource-id>HSS-ExtDbConfig</resource-id> object that must
 be properly set for ISM/SDA/AVG/SM/ESM:</p><note><p>For the different
 modules, different objects are used as follows:</p>
-<p>For ISM/SDA, <resource-id>HSS-ExtDbConfig</resource-id> objectClass </p>
+<p>For ISM/SDA, <resource-id>HSS-ExtDbConfig</resource-id> objectClass</p>
 <p>For ESM, <resource-id>HSS-EsmExtDbConfiguration</resource-id> objectClass</p>
 <p>For SM, <resource-id>HSS-SmExtDbConfiguration</resource-id> objectClass</p>
 <p>For AVG, <resource-id>HSS-AvgExtDbConfiguration</resource-id> objectClass</p>
@@ -3393,7 +3392,7 @@ type="medium">&lt; Authentication Method></emph></p>
 <list-item><p><resource-id>HSS-ExtDbConfigRootDnList</resource-id
 >:1:ou=Associations, <emph type="medium">&lt;rootDN></emph></p>
 <p><resource-id>HSS-ExtDbConfigRootDnList:</resource-id>:2:ou=multiSCs,<emph
-type="medium">&lt;rootDN></emph> </p>
+type="medium">&lt;rootDN></emph></p>
 <p><resource-id>HSS-ExtDbConfigRootDnList:</resource-id>:3:dc=impi,ou=identities,<emph
 type="medium">&lt;rootDN></emph></p>
 <p><resource-id>HSS-ExtDbConfigRootDnList:</resource-id>:4:dc=impu,ou=identities,<emph
@@ -3556,7 +3555,7 @@ the revision of the tgz file.</p>
 >_TAR_GZIPV1.tar.gz &rArr;<nl/>&rArr;<nl/>root@<var>&lt;CUDB_VIP_OAM></var
 >:/cluster</input></p>
 </sl-item></atict:add>
-<sl-item><p>Connect to active CUDB System Controller. </p>
+<sl-item><p>Connect to active CUDB System Controller.</p>
 <p>To verify which one is active use following command:</p>
 <p>&lt;SC>:root#<input>cat /proc/drbd</input></p>
 <note><p>To know if SC is active or standby see the if the output
@@ -3566,7 +3565,7 @@ connected to active system controller. In case the output is <output
 This procedure should be run from active system controller. It doesn't
 matter which SC you run the script from because the script will check
 which one is the active and if it was not run from the active SC then
-it will stop and tell the user to change to the other one. </p>
+it will stop and tell the user to change to the other one.</p>
 </note>
 <p>&lt;SC>:root#<input>cd /cluster</input></p>
 </sl-item>
@@ -3584,7 +3583,7 @@ time="1476428251"><p><output>&lt;SC># </output><input>tar xvf /cluster/&rArr;<nl
 />6_19089-CXP9024763_5_X_<var>&lt;RState></var>_TAR_GZIPV1.tar.gz
 &rArr;<nl/>-C /cluster/app_counters</input></p></atict:add><p>&lt;SC>#<input
 >cd <atict:add user="einmpen" time="1476428266">/cluster/</atict:add
->app_counters</input> </p>
+>app_counters</input></p>
 <p>&lt;SC>#<input>mv software_records_hss/Application_Counters_CXC/appcounter-HSS.pl
 app_counters_hss.pl .</input></p>
 </sl-item>
@@ -3645,15 +3644,15 @@ by the final customer to prepare the required ones, if desired.</p>
 <entry><tp>ESM</tp>
 </entry>
 <entry><tp>subscriber_esm_def_prof_MO.ldif</tp>
-<tp>subscriber_esm_ind_prof_MO.ldif </tp>
-<tp>node_data_dia_esm_configuration_all.ldif </tp>
+<tp>subscriber_esm_ind_prof_MO.ldif</tp>
+<tp>node_data_dia_esm_configuration_all.ldif</tp>
 <tp>node_data_esm_configuration_all.ldif</tp>
 </entry>
 </row>
 <row>
 <entry><tp>AVG</tp>
 </entry>
-<entry><tp>subscriber_avg_aka_usim.ldif </tp>
+<entry><tp>subscriber_avg_aka_usim.ldif</tp>
 <tp>subscriber_avg_isim_usim_opc.ldif</tp>
 <tp>node_data_avg_configuration_complete.ldif</tp>
 </entry>
@@ -3671,34 +3670,34 @@ by the final customer to prepare the required ones, if desired.</p>
 <row>
 <entry><tp>ISM+SDA</tp>
 </entry>
-<entry><tp>subscriber_ism_sda_default_MO.ldif </tp>
+<entry><tp>subscriber_ism_sda_default_MO.ldif</tp>
 <tp>subscriber_ism_sda_lineprofile_MO.ldif</tp>
 <tp>subscriber_ism_sda_wpsi_default_MO.ldif</tp>
 <tp>subscriber_ism_sda_wimpu_default_MO.ldif</tp>
 <tp>node_data_ism_configuration_all.ldif</tp>
-<tp>node_data_dia_ism_configuration_complete.ldif </tp>
+<tp>node_data_dia_ism_configuration_complete.ldif</tp>
 </entry>
 </row>
 <row>
 <entry><tp>SM</tp>
 </entry>
-<entry><tp>node_data_dia_sm_configuration_complete.ldif </tp>
+<entry><tp>node_data_dia_sm_configuration_complete.ldif</tp>
 <tp>node_data_sm_configuration_complete.ldif</tp>
 </entry>
 </row>
 <row>
 <entry><tp>SLF</tp>
 </entry>
-<entry><tp>subscriber_slf_wimpi.ldif </tp>
-<tp>subscriber_slf_wimpu.ldif </tp>
+<entry><tp>subscriber_slf_wimpi.ldif</tp>
+<tp>subscriber_slf_wimpu.ldif</tp>
 <tp>subscriber_slf_wmsisdn.ldif</tp>
-<tp>subscriber_slf_wimpu_irs.ldif </tp>
-<tp>subscriber_slf_wimsi.ldif </tp>
-<tp>subscriber_slf_wpsi.ldif </tp>
+<tp>subscriber_slf_wimpu_irs.ldif</tp>
+<tp>subscriber_slf_wimsi.ldif</tp>
+<tp>subscriber_slf_wpsi.ldif</tp>
 <tp>node_data_slf_ism_configuration_all.ldif</tp>
 <tp>node_data_dia_slf_ism_configuration_complete.ldif</tp>
-<tp>node_data_dia_slf_esm_configuration_complete.ldif </tp>
-<tp>node_data_slf_esm_configuration_all.ldif </tp>
+<tp>node_data_dia_slf_esm_configuration_complete.ldif</tp>
+<tp>node_data_slf_esm_configuration_all.ldif</tp>
 <tp>node_data_hsi_mod.ldif</tp>
 </entry>
 </row>
@@ -3778,7 +3777,7 @@ in <ulink xlink:type="simple"
 xlink:href="https://mhweb.ericsson.se/TREditWeb/faces/tredit/tredit.xhtml?mode=VIEW&amp;eriref=HT81248"
 xlink:title="https://mhweb.ericsson.se/TREditWeb/faces/tredit/tredit.xhtml?mode=VIEW&amp;eriref=HT81248"
 xmlns:xlink="http://www.w3.org/1999/xlink"><input>HT81248</input></ulink
-> </p>
+></p>
 </note>
 </chl>
 <chl xml:id="PMFscripts"><title xml:id="id_8ki4">PMF Scripts</title>
@@ -3800,13 +3799,13 @@ for NSP 6.1</ulink></wrap><atict:del user="s23433" time="1474357020"
 for NSP 6.1</emph>, <xref linkend="TSPInstall"/></wrap></atict:del
 >.</p>
 <p>Go the following path: /opt/telorb/axe/loadingGroup01_1/mirrored/config/NM/PMF/PerformanceFiles
-and execute the following commands </p>
+and execute the following commands</p>
 <p>&lt;IO2>:telorb> <input>cd /opt/telorb/axe/loadingGroup01_1/mirrored/<nl
 />config/NM/PMF/PerformanceFiles</input></p>
 <p>&lt;IO2>:telorb><input>./importMeasurements.csh platform-vip 7323
-AVG.ldif </input> </p>
+AVG.ldif </input></p>
 <p>&lt;IO2>:telorb> <input>./importMeasurementsEsm.csh platform-vip
-7323 ESM.ldif</input> </p>
+7323 ESM.ldif</input></p>
 <p>&lt;IO2>:telorb> <input>./importMeasurementsIsm.csh platform-vip
 7323 HSS.ldif </input></p>
 <p>&lt;IO2>:telorb> <input>./importMeasurementsSda.csh platform-vip
@@ -3836,7 +3835,7 @@ must be executed</p>
 <p>><input>setenv tspCmOldApplogEnabled 1 </input></p>
 </sl-item>
 <sl-item><p>Set the variable <input>tspCmApplogDisabled</input> to
-1 </p>
+1</p>
 <p>><input>setenv tspCmApplogDisabled 1 </input></p>
 </sl-item>
 <sl-item><p>Disconnect from t-util</p>
@@ -3881,7 +3880,7 @@ linkend="HSSInstallationExpansions"/></wrap></atict:del>.</p>
 set to "FALSE" at installation time, the recommended value must be
 different depending on installation type.</p>
 <p>In Front-End configuration, this parameter must be set to "FALSE"
-value in order to avoid cache of data in the HSS Front End. </p>
+value in order to avoid cache of data in the HSS Front End.</p>
 <p>In Classic configuration the recommendation is set this parameter
 to "TRUE" value, unless otherwise is indicated</p>
 </chl>
@@ -4046,7 +4045,7 @@ layer.</p>
 <step-list>
 <sl-item><p>Follow the instructions stated in <xref
 linkend="DBNMemoryShare"/>. Remember to repeat the instructions in
-zone 1 and zone 2. </p>
+zone 1 and zone 2.</p>
 </sl-item>
 </step-list>
 </chl>
@@ -4196,7 +4195,7 @@ xmlns:xlink="http://www.w3.org/1999/xlink"></ulink></rf-title></rf-item>
 xlink:href="urn:x-ericsson:r2:reg-doc:*1543-*:*:*?title=Configuring SS7 Signalling Network, SCCP, M3"
 xlink:title="Configuring SS7 Signalling Network, SCCP, M3"
 xmlns:xlink="http://www.w3.org/1999/xlink"></ulink></rf-title></rf-item>
-<rf-item xml:id="SS7INAP"><rf-title> <ulink xlink:type="simple"
+<rf-item xml:id="SS7INAP"><rf-title><ulink xlink:type="simple"
 xlink:href="urn:x-ericsson:r2:reg-doc:*1543-*:*:*?title=Configuring SS7, INAP"
 xlink:title="Configuring SS7, INAP"
 xmlns:xlink="http://www.w3.org/1999/xlink"></ulink></rf-title></rf-item>

@@ -1,5 +1,6 @@
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -24,8 +25,8 @@ public class Approver {
 	
 	private String repairTM(String text){
 		text = text.replaceFirst("p>.+?Ericsson AB", "p>&copy; Ericsson AB");
-		if (text.contains("â")){
-			System.out.println("Repairing (â)");
+		if (text.contains("ï¿½")){
+			System.out.println("Repairing (ï¿½)");
 			text = text.replace("â€™", "&rsquo;");	// apostrophe
 			text = text.replace("â†’", "&rarr;");	// right arrow
 			text = text.replace("â„¢", "&trade;");	// trademark mark
@@ -36,7 +37,7 @@ public class Approver {
 			text = text.replace("â””", "&boxur;");	// tree corner UP-RIGHT
 			text = text.replace("â€”", "&mdash;");	// em dash
 			text = text.replace("â€‰", " ");		// spaces next to em dash
-			System.out.println((text.contains("â")) ? "Could not repair \"â\"" : "Removed all \"â\"");
+			System.out.println((text.contains("ï¿½")) ? "Could not repair \"ï¿½\"" : "Removed all \"ï¿½\"");
 		}
 		return text;
 	}
@@ -79,6 +80,22 @@ public class Approver {
 		return text;
 	}
 	
+	private String byteRead() {
+		String text = null;
+		try {
+			FileInputStream fis = new FileInputStream(targetFile.getPath());
+			byte[] data = new byte[(int) targetFile.length()];
+			fis.read(data);
+			fis.close();
+			text = new String(data, "UTF-8");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return text;
+	}
+	
 	private String readContent() {
 		Scanner fileIn = null;
 		String fileContent = null;
@@ -100,7 +117,7 @@ public class Approver {
 
 	public Approver(File targetFile) {
 		this.targetFile = targetFile;
-		content = readContent();
+		content = byteRead();
 		newContent = repairTM(modify(content));
 		writeFile();
 	}
