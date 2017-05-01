@@ -9,6 +9,7 @@ class RepairClass {
 	private final String content;
 	private final String newContent;
 	private final String[] sig;
+	private final Scanner in;
 
 	private void writeFile() {
 		long lengthBefore = targetFile.length();
@@ -169,6 +170,17 @@ class RepairClass {
 		int endIndex = raw.lastIndexOf('<');
 		return raw.substring(beginIndex, endIndex);
 	}
+	
+	private String colwidth(String text) {
+		if (text.contains("colwidth")){
+			System.out.println("Remove colwidht?(y/*) ");
+			if (in.nextLine().trim().toLowerCase().equals("y")) {
+				text = text.replaceAll("\\scolwidth=\".+?\"", "");
+			}
+			in.close();
+		}
+		return text;
+	}
 
 	private String addSignature(String text) {
 		final String[][] SIGNATURES = new String[][] { 
@@ -180,8 +192,6 @@ class RepairClass {
 			{ "Juha Ritvanen", "LMFJURI" }, 
 			{ "Juha S&auml;&auml;skilahti", "LMFJSAA" },
 			{ "Syed Safi Ali Shah", "ESYISHH" }};
-
-		Scanner in = new Scanner(System.in);
 
 		if (sig[1].length() < 3) {
 			System.out.println("\nNo signature!\nAdd signature?");
@@ -198,7 +208,6 @@ class RepairClass {
 		int choice = 0;
 		choice = in.nextInt() - 1;
 		if (choice < 0) {
-			in.close();
 			return text;
 		}
 
@@ -209,8 +218,7 @@ class RepairClass {
 
 		text = text.substring(0, beginIndex) + "<name>" + SIGNATURES[choice][0] + "</name><signature>"
 				+ SIGNATURES[choice][1] + "</signature>\n" + text.substring(endIndex);
-
-		in.close();
+		System.out.println(in.nextLine());
 		return text;
 	}
 
@@ -231,8 +239,7 @@ class RepairClass {
 		text = clearSpaces(text);
 		text = repairTM(text);
 		text = addSignature(text);
-		// remove colwidth
-		text = text.replaceAll("\\scolwidth=\".+?\"", "");
+		text = colwidth(text);
 		text = figInP(text);
 		try {
 			text = substeps(text);
@@ -252,7 +259,6 @@ class RepairClass {
 				"$1<reference-list><rf-subsection></rf-subsection></reference-list>$2");
 
 		text = tableToGrid(text);
-
 		return text;
 	}
 
@@ -311,9 +317,8 @@ class RepairClass {
 		System.out.println(targetFile.getName());
 		content = byteRead();
 		sig = readMetadata();
+		in = new Scanner(System.in);
 		newContent = repair(content);
-		// System.out.println("original length: " + content.length());
-		// System.out.println("new length: " + newContent.length());
 		System.out.println("content difference: " + (newContent.length() - content.length()));
 		writeFile();
 	}
