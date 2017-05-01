@@ -10,7 +10,7 @@ Functions to add:
 
 Other tasks:
 - [ ] test new Repair and output tester
-- [ ] replace old RepairXML
+- [ ] replace old [RepairXML](src/RepairXML.java)
 - [ ] clean up whole project
 
 
