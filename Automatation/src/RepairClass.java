@@ -237,7 +237,7 @@ class RepairClass {
 
 	private String repair(String text) {
 		text = clearSpaces(text);
-		text = repairTM(text);
+		//text = repairTM(text);
 		text = addSignature(text);
 		text = colwidth(text);
 		text = figInP(text);
@@ -259,6 +259,8 @@ class RepairClass {
 				"$1<reference-list><rf-subsection></rf-subsection></reference-list>$2");
 
 		text = tableToGrid(text);
+		// check for wrong characters
+		if (text.contains("�")) System.out.println("ENCODING ERROR");		
 		return text;
 	}
 
@@ -280,6 +282,7 @@ class RepairClass {
 		return signum;
 	}
 
+	/*
 	private String readContent() {
 		String text = null;
 		Scanner fileIn = null;
@@ -295,6 +298,7 @@ class RepairClass {
 		}
 		return text;
 	}
+	*/
 
 	private String byteRead() {
 		String text = null;

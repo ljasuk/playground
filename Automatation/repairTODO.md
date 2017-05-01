@@ -9,7 +9,7 @@ Functions to add:
 - [ ] charset safety check method instead of repairTM, remove readContent
 
 Other tasks:
-- [ ] test [Repair](src/RepairClass.java) &
+- [ ] test new [Repair](src/RepairClass.java) and
 [output tester](src/OutputTester.java)
 - [ ] replace old [RepairXML](src/RepairXML.java)
 - [ ] clean up whole project
