@@ -12,11 +12,13 @@ class RepairClass {
 
 	
 	private void writeFile(){
+		long lengthBefore = targetFile.length();
 		try (BufferedWriter writer = Files.newBufferedWriter(targetFile.toPath())) {
 		    writer.write(newContent);
 		} catch (IOException x) {
 		    System.err.format("IOException: %s%n", x);
 		}
+		System.out.println("\nSize difference: " + (targetFile.length() - lengthBefore));
 		System.out.println("\nDONE");
 		try {
 			Thread.sleep(500);
@@ -299,6 +301,25 @@ class RepairClass {
 		}
 		return text;
 	}
+	
+	private static String byteRead(){
+		String text = null;
+		try {
+			FileInputStream fis = new FileInputStream(targetFile.getPath());
+			byte[] data = new byte[(int) target.length()];
+			fis.read(data);
+			fis.close();
+
+			text = new String(data, "UTF-8");
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return text;
+	}
 
 
 	/*private File lastFileModified(File workDir) {
@@ -342,7 +363,7 @@ class RepairClass {
 	public RepairClass(File targetFile){
 		this.targetFile = targetFile;
 		System.out.println(targetFile.getName());
-		content = readContent();
+		content = byteRead();
 		sig = readMetadata();
 		newContent = repair(content);
 		System.out.println("original length: "+content.length());

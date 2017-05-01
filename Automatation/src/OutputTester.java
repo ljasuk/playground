@@ -17,14 +17,16 @@ public class OutputTester {
 	private static File target;
 
 	private static String targetPath;
-	private static long fileSize = 0;
+	//private static long fileSize = 0;
 	
 	private static void writeFile(){
+		long lengthBefore = targetFile.length();
 		try (BufferedWriter writer = Files.newBufferedWriter(target.toPath())) {
 		    writer.write(content);
 		} catch (IOException x) {
 		    System.err.format("IOException: %s%n", x);
 		}
+		System.out.println("\nSize difference: " + (targetFile.length() - lengthBefore));
 		System.out.println("\nDONE");
 		try {
 			Thread.sleep(500);
@@ -36,7 +38,7 @@ public class OutputTester {
 	
 	private static String scanFile(){
 		File target = new File(targetPath);
-		fileSize = target.length();
+		//fileSize = target.length();
 		String text = "";
 		System.out.println(target.exists());
 		Scanner fileIn = null;
@@ -60,8 +62,8 @@ public class OutputTester {
 		String text = null;
 		try {
 			FileInputStream fis = new FileInputStream(targetPath);
-			fileSize = target.length();
-			byte[] data = new byte[(int) fileSize];
+			//fileSize = target.length();
+			byte[] data = new byte[(int) target.length()];
 			fis.read(data);
 			fis.close();
 
@@ -97,17 +99,29 @@ public class OutputTester {
 	}
 	
 	public static void main(String[] args) {
-		targetPath = "/media/koger/New Volume/Downloads/13938237_494210704109654_1447229537017601039_o.jpg";
-		target = new File(targetPath);
+		File folder = "/media/koger/New Volume/sheet/";
+		// read the folder and filter for .adoc extension
+		File[] listOfFiles = folder.listFiles();
+		
+		// sending all the files to the replacer
+		for (File file : listOfFiles) {
+			target =  file;
+			targetPath = file.getPath();
+			content = byteRead();
+			writeFile();
+		}
+		
+		//targetPath = "/media/koger/New Volume/Downloads/13938237_494210704109654_1447229537017601039_o.jpg";
+		//target = new File(targetPath);
 		//System.out.println(byteRead());
-		content = byteRead();
+		//content = byteRead();
 		//System.out.println(buffRead());
 		
 		
 		//System.out.println(content);
 		
-		writeFile();
-		System.out.println(target.getName()+"\nDifference: " + (target.length() - fileSize));
+		//writeFile();
+		//System.out.println(target.getName()+"\nDifference: " + (target.length() - fileSize));
 		
 		
 	}
