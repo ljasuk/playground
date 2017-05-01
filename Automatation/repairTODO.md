@@ -6,10 +6,11 @@ Functions to add:
 - [ ] handle UTF-8 or appropriate encoding
 - [ ] too long: health_check, troubleshooting_g, UATS?, Demo?, etc.
 - [ ] cut preforms that are too long (97+ char?)
-- [ ] charaset safety check method instead of repairTM
+- [ ] charset safety check method instead of repairTM, remove readContent
 
 Other tasks:
-- [ ] test new Repair and output tester
+- [ ] test [Repair](src/RepairClass.java) &
+[output tester](src/OutputTester.java)
 - [ ] replace old [RepairXML](src/RepairXML.java)
 - [ ] clean up whole project
 
