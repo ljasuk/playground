@@ -18,7 +18,11 @@ class RepairXml {
 		} catch (IOException x) {
 			System.err.format("IOException: %s%n", x);
 		}
-		System.out.println("\nSize difference: " + (targetFile.length() - lengthBefore));
+		System.out.println("\nContent difference: " + (newContent.length() - content.length()));
+		System.out.println("Size difference:    " + (targetFile.length() - lengthBefore) 
+				+ "  (" + String.format("%.2f", 
+						(((double) Math.abs(targetFile.length() - lengthBefore)*100) 
+								/ (double)lengthBefore))+ "%)");
 		System.out.println("\nDONE");
 		try {
 			Thread.sleep(500);
@@ -43,25 +47,31 @@ class RepairXml {
 		return text;
 	}
 
-	/*private String exampleToP(String list) {
-		list = list.replaceAll("<example.*?>", "<p>");
-		list = list.replace("</example>", "</p>");
-		System.out.println(list);
-		return list;
-	}*/
-
 	private String turnToSL(String text) {
 		int cursor = 0;
-		text = text.replaceFirst("<list type=\"numeric\">", "<step-list>");
-		while (text.substring(cursor).contains("<list type=\"unordered\">")) {
-			int index = text.indexOf("<list type=\"unordered\">");
+		text = text.replaceFirst("<list type=\"numeric\".*?>", "<step-list>");
+		while (text.substring(cursor).contains("<list type=\"unordered\" compact=\"no\">")) {
+			int index = cursor + (text.substring(cursor).indexOf("<list type=\"unordered\" compact=\"no\">"));
 			text = text.substring(0, cursor) 
-					+ text.substring(cursor, index).replaceAll("<list-item.*?>", "<sl-item>").replaceAll("</list-item>", "</sl-item>").replaceAll("<example.*?>", "<stepxmp>").replace("</example>", "</stepxmp>") 
+					+ text.substring(cursor, index).replaceAll("<list-item.*?>", "<sl-item>")
+					.replace("</list-item>", "</sl-item>")
+					.replaceAll("<example.*?>", "<stepxmp>")
+					.replace("</example>", "</stepxmp>")
+					.replace("<p><preform>", "<stpexmp><preform>")
+					.replace("</preform></p>", "</preform></stpexm>")
 					+ text.substring(index);
 			cursor = index + text.substring(index).indexOf("</list>")+7;
 		}
+		
 		text = text.substring(0, cursor) 
-				+ text.substring(cursor).replaceAll("<list-item.*?>", "<sl-item>").replaceAll("</list-item>", "</sl-item>").replaceAll("<example.*?>", "<stepxmp>").replace("</example>", "</stepxmp>");
+				+ text.substring(cursor)
+				.replaceAll("<list-item.*?>", "<sl-item>")
+				.replace("</list-item>", "</sl-item>")
+				.replaceAll("<example.*?>", "<stepxmp>")
+				.replace("</example>", "</stepxmp>")
+				.replace("</list>", "</step-list>")
+				.replace("<p><preform>", "<stpexp><preform>")
+				.replace("</preform></p>", "</preform></stpexp>");
 		
 		return text;
 	}
@@ -78,41 +88,31 @@ class RepairXml {
 		int cursor = 0;
 		String oTag = "<list type=\"numeric";
 		String cTag = "</list>";
-
+		
+		// while there are numeric lists after the cursor
 		while (text.substring(cursor).contains(oTag)) {
 			int listBegin = text.indexOf(oTag, cursor);
-			int listClosing = text.indexOf(cTag, listBegin);
-			String list = text.substring(listBegin, listClosing + 7);
-			
-			// if it's a complete list, swap examples and move on
-			/*if (count(oTag, list) == count(cTag, list)) {
-
-				if (list.contains("<example")) {
-					int newSize = exampleToP(text.substring(listBegin, listClosing)).length();
-					text = text.substring(0, listBegin) 
-							+ exampleToP(text.substring(listBegin, listClosing))
-							+ text.substring(listClosing);
-					cursor = listBegin + newSize + 7;
-				} else
-					cursor = listClosing + 7;
-				continue;
-			}*/
+			int listClosing = text.indexOf(cTag, listBegin) + 7;
+			String list = text.substring(listBegin, listClosing);
 			
 			// while the list is not complete, move listClosing to next closing tag
-			while (count(oTag, list) != count(cTag, list)) {
-				System.out.println("Substeplist!");
-				listClosing = text.indexOf(cTag, listClosing + 7);
-				list = text.substring(listBegin, listClosing + 7);
+			while (count("<list type", list) != count(cTag, list)) {
+				System.out.println("Nested list!");
+				listClosing = text.indexOf(cTag, listClosing) + 7;
+				list = text.substring(listBegin, listClosing);
 			}
 			
 			// turn nested numeric lists into substeplists
 			while (count(oTag, list) > 1) {
 				int beginIndex = text.indexOf(oTag, listBegin + 10);
-				int endIndex = text.indexOf(cTag, listBegin + 10);
+				int endIndex = text.indexOf(cTag, beginIndex) + 7;
+				int kul = turnToSubstep(text.substring(beginIndex, endIndex)).length() 
+						- text.substring(beginIndex, endIndex).length(); 
 				text = text.substring(0, beginIndex) 
-						+ turnToSubstep(text.substring(beginIndex, endIndex + 7))
-						+ text.substring(endIndex + 7);
-				list = text.substring(listBegin, listClosing + 7);
+						+ turnToSubstep(text.substring(beginIndex, endIndex))
+						+ text.substring(endIndex);
+				listClosing += kul;
+				list = text.substring(listBegin, listClosing);
 
 			}
 			
@@ -121,7 +121,7 @@ class RepairXml {
 					+ turnToSL(text.substring(listBegin, listClosing))
 					+ text.substring(listClosing);
 
-			cursor = listBegin + newSize + 7;
+			cursor = listBegin + newSize;
 		}
 		return text;
 	}
@@ -132,7 +132,7 @@ class RepairXml {
 		while (matcher.find()) {
 			count += 1;
 		}
-		// System.out.println(regex + ": "+count);
+
 		return count;
 	}
 	
@@ -140,14 +140,12 @@ class RepairXml {
 	private String figInP(String text) {
 		int openingTag = count("<p><figure", text);
 		if (openingTag > 0 && openingTag == count("</figure></p>", text)) {
-			//Scanner in = new Scanner(System.in);
 			System.out.println(openingTag + " figures in paragraphs. Take " + 
 			"figures out of paragraphs?");
 			if (in.nextLine().toLowerCase().equals("y")) {
 				text = text.replace("<p><figure", "<figure");
 				text = text.replace("</figure></p>", "</figure>");
 			}
-			//in.close();
 		}
 		return text;
 	}
@@ -201,6 +199,8 @@ class RepairXml {
 
 		int choice = 0;
 		choice = in.nextInt() - 1;
+		in.nextLine();
+		
 		if (choice < 0) {
 			return text;
 		}
@@ -210,9 +210,9 @@ class RepairXml {
 		beginIndex = text.indexOf("<person>", beginIndex) + 8;
 		endIndex = text.indexOf("<location", beginIndex);
 
-		text = text.substring(0, beginIndex) + "<name>" + SIGNATURES[choice][0] + "</name><signature>"
+		text = text.substring(0, beginIndex) + "<name>" 
+				+ SIGNATURES[choice][0] + "</name><signature>"
 				+ SIGNATURES[choice][1] + "</signature>\n" + text.substring(endIndex);
-		System.out.println(in.nextLine());
 		return text;
 	}
 
@@ -231,7 +231,6 @@ class RepairXml {
 
 	private String repair(String text) {
 		text = clearSpaces(text);
-		//text = repairTM(text);
 		text = addSignature(text);
 		text = colwidth(text);
 		text = figInP(text);
@@ -256,7 +255,7 @@ class RepairXml {
 		// scalefit of graphics set to 1
 		text = text.replace("scalefit=\"0\"", "scalefit=\"1\"");
 		// check for wrong characters
-		if (text.contains("â")) System.out.println("ENCODING ERROR");		
+		if (text.contains("ï¿½")) System.out.println("ENCODING ERROR");		
 		return text;
 	}
 
@@ -301,7 +300,6 @@ class RepairXml {
 		sig = readMetadata();
 		in = new Scanner(System.in);
 		newContent = repair(content);
-		System.out.println("content difference: " + (newContent.length() - content.length()));
 		writeFile();
 	}
 }
