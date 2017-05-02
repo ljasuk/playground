@@ -43,21 +43,27 @@ class RepairXml {
 		return text;
 	}
 
-	private String exampleToP(String list) {
+	/*private String exampleToP(String list) {
 		list = list.replaceAll("<example.*?>", "<p>");
 		list = list.replace("</example>", "</p>");
 		System.out.println(list);
 		return list;
-	}
+	}*/
 
-	private String turnToSL(String list) {
-		list = list.replaceAll("<list-item.*?>", "<sl-item>");
-		list = list.replaceAll("</list-item>", "</sl-item>");
-		list = list.replaceAll("<list.*?>", "<step-list>");
-		list = list.replace("</list>", "</step-list>");
-		list = list.replaceAll("<example.*?>", "<stepxmp>");
-		list = list.replace("</example>", "</stepxmp>");
-		return list;
+	private String turnToSL(String text) {
+		int cursor = 0;
+		text = text.replaceFirst("<list type=\"numeric\">", "<step-list>");
+		while (text.substring(cursor).contains("<list type=\"unordered\">")) {
+			int index = text.indexOf("<list type=\"unordered\">");
+			text = text.substring(0, cursor) 
+					+ text.substring(cursor, index).replaceAll("<list-item.*?>", "<sl-item>").replaceAll("</list-item>", "</sl-item>").replaceAll("<example.*?>", "<stepxmp>").replace("</example>", "</stepxmp>") 
+					+ text.substring(index);
+			cursor = index + text.substring(index).indexOf("</list>")+7;
+		}
+		text = text.substring(0, cursor) 
+				+ text.substring(cursor).replaceAll("<list-item.*?>", "<sl-item>").replaceAll("</list-item>", "</sl-item>").replaceAll("<example.*?>", "<stepxmp>").replace("</example>", "</stepxmp>");
+		
+		return text;
 	}
 
 	private String turnToSubstep(String list) {
@@ -79,7 +85,7 @@ class RepairXml {
 			String list = text.substring(listBegin, listClosing + 7);
 			
 			// if it's a complete list, swap examples and move on
-			if (count(oTag, list) == count(cTag, list)) {
+			/*if (count(oTag, list) == count(cTag, list)) {
 
 				if (list.contains("<example")) {
 					int newSize = exampleToP(text.substring(listBegin, listClosing)).length();
@@ -90,7 +96,7 @@ class RepairXml {
 				} else
 					cursor = listClosing + 7;
 				continue;
-			}
+			}*/
 			
 			// while the list is not complete, move listClosing to next closing tag
 			while (count(oTag, list) != count(cTag, list)) {
@@ -109,12 +115,13 @@ class RepairXml {
 				list = text.substring(listBegin, listClosing + 7);
 
 			}
-
+			
+			int newSize = turnToSL(text.substring(listBegin, listClosing)).length();
 			text = text.substring(0, listBegin) 
 					+ turnToSL(text.substring(listBegin, listClosing))
 					+ text.substring(listClosing);
 
-			cursor = text.substring(listBegin, listClosing).lastIndexOf(cTag) + 7;
+			cursor = listBegin + newSize + 7;
 		}
 		return text;
 	}
