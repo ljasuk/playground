@@ -7,12 +7,15 @@ Functions to add:
 - [x] too long: health_check, troubleshooting_g, UATS?, Demo?, etc.
 - [ ] cut preforms that are too long (97+ char?)
 - [x] charset safety check method instead of repairTM, remove readContent
+- [ ] turn all numeric lists to steplists. (or at least those,
+that contain preforms)
 
 Other tasks:
 - [x] test new [Repair](src/RepairClass.java) and
 [output tester](src/OutputTester.java)
 - [x] replace old [RepairXML](src/RepairXML.java)
 - [ ] clean up whole project
+
 
 
 

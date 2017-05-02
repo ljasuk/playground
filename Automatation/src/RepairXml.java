@@ -77,29 +77,34 @@ class RepairXml {
 			int listBegin = text.indexOf(oTag, cursor);
 			int listClosing = text.indexOf(cTag, listBegin);
 			String list = text.substring(listBegin, listClosing + 7);
-
+			
+			// if it's a complete list, swap examples and move on
 			if (count(oTag, list) == count(cTag, list)) {
 
 				if (list.contains("<example")) {
 					int newSize = exampleToP(text.substring(listBegin, listClosing)).length();
-					text = text.substring(0, listBegin) + exampleToP(text.substring(listBegin, listClosing))
+					text = text.substring(0, listBegin) 
+							+ exampleToP(text.substring(listBegin, listClosing))
 							+ text.substring(listClosing);
 					cursor = listBegin + newSize + 7;
 				} else
 					cursor = listClosing + 7;
 				continue;
 			}
-
+			
+			// while the list is not complete, move listClosing to next closing tag
 			while (count(oTag, list) != count(cTag, list)) {
 				System.out.println("Substeplist!");
 				listClosing = text.indexOf(cTag, listClosing + 7);
 				list = text.substring(listBegin, listClosing + 7);
 			}
-
+			
+			// turn nested numeric lists into substeplists
 			while (count(oTag, list) > 1) {
 				int beginIndex = text.indexOf(oTag, listBegin + 10);
 				int endIndex = text.indexOf(cTag, listBegin + 10);
-				text = text.substring(0, beginIndex) + turnToSubstep(text.substring(beginIndex, endIndex + 7))
+				text = text.substring(0, beginIndex) 
+						+ turnToSubstep(text.substring(beginIndex, endIndex + 7))
 						+ text.substring(endIndex + 7);
 				list = text.substring(listBegin, listClosing + 7);
 
@@ -128,13 +133,14 @@ class RepairXml {
 	private String figInP(String text) {
 		int openingTag = count("<p><figure", text);
 		if (openingTag > 0 && openingTag == count("</figure></p>", text)) {
-			Scanner in = new Scanner(System.in);
-			System.out.println(openingTag + " figures in paragraphs. Take " + "figures out of paragraphs?");
-			if (in.next().toLowerCase().equals("y")) {
+			//Scanner in = new Scanner(System.in);
+			System.out.println(openingTag + " figures in paragraphs. Take " + 
+			"figures out of paragraphs?");
+			if (in.nextLine().toLowerCase().equals("y")) {
 				text = text.replace("<p><figure", "<figure");
 				text = text.replace("</figure></p>", "</figure>");
 			}
-			in.close();
+			//in.close();
 		}
 		return text;
 	}
@@ -158,7 +164,7 @@ class RepairXml {
 			if (in.nextLine().trim().toLowerCase().equals("y")) {
 				text = text.replaceAll("\\scolwidth=\".+?\"", "");
 			}
-			in.close();
+			
 		}
 		return text;
 	}
@@ -238,8 +244,10 @@ class RepairXml {
 		// empty reference list
 		text = text.replaceFirst("(<reference xml:id=\"references\">)\n(</reference>)",
 				"$1<reference-list><rf-subsection></rf-subsection></reference-list>$2");
-
+		
 		text = tableToGrid(text);
+		// scalefit of graphics set to 1
+		text = text.replace("scalefit=\"0\"", "scalefit=\"1\"");
 		// check for wrong characters
 		if (text.contains("â")) System.out.println("ENCODING ERROR");		
 		return text;
