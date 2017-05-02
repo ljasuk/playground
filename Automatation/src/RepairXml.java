@@ -3,7 +3,7 @@ import java.nio.file.Files;
 import java.util.*;
 import java.util.regex.*;
 
-class RepairClass {
+class RepairXml {
 
 	private final File targetFile;
 	private final String content;
@@ -39,26 +39,6 @@ class RepairClass {
 				grid = grid.replace("</table>", "</grid>");
 				text = text.replace(list, grid);
 			}
-		}
-		return text;
-	}
-
-	private String repairTM(String text) {
-		text = text.replaceFirst("p>.+?Ericsson AB", "p>&copy; Ericsson AB");
-		if (text.contains("�")) {
-			System.out.println("Repairing (�)");
-			text = text.replace("’", "&rsquo;");	// apostrophe
-			text = text.replace("→", "&rarr;");		// right arrow
-			text = text.replace("™", "&trade;");	// trademark mark
-			text = text.replace("®", "&reg;");		// R in circle
-			text = text.replace("├", "&boxvr;");	// tree line T
-			text = text.replace("─", "&boxh;");		// tree line horizontal
-			text = text.replace("│", "&boxv;");		// tree line vertical
-			text = text.replace("└", "&boxur;");	// tree corner UP-RIGHT
-			text = text.replace("…", "&mldr;");		// three dots
-			text = text.replace("—", "&mdash;");	// em dash
-			text = text.replace(" ", " ");			// spaces next to em dash
-			System.out.println((text.contains("�")) ? "Could not repair \"�\"" : "Removed all \"�\"");
 		}
 		return text;
 	}
@@ -143,7 +123,8 @@ class RepairClass {
 		// System.out.println(regex + ": "+count);
 		return count;
 	}
-
+	
+	// might be taken out
 	private String figInP(String text) {
 		int openingTag = count("<p><figure", text);
 		if (openingTag > 0 && openingTag == count("</figure></p>", text)) {
@@ -260,7 +241,7 @@ class RepairClass {
 
 		text = tableToGrid(text);
 		// check for wrong characters
-		if (text.contains("�")) System.out.println("ENCODING ERROR");		
+		if (text.contains("�")) System.out.println("ENCODING ERROR");		
 		return text;
 	}
 
@@ -282,24 +263,6 @@ class RepairClass {
 		return signum;
 	}
 
-	/*
-	private String readContent() {
-		String text = null;
-		Scanner fileIn = null;
-		try {
-			fileIn = new Scanner(targetFile);
-			text = fileIn.useDelimiter("\\Z").next();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (NoSuchElementException e) {
-			e.printStackTrace();
-		} finally {
-			fileIn.close();
-		}
-		return text;
-	}
-	*/
-
 	private String byteRead() {
 		String text = null;
 		try {
@@ -316,7 +279,7 @@ class RepairClass {
 		return text;
 	}
 
-	public RepairClass(File targetFile) {
+	public RepairXml(File targetFile) {
 		this.targetFile = targetFile;
 		System.out.println(targetFile.getName());
 		content = byteRead();

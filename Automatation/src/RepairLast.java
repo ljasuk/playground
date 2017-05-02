@@ -50,6 +50,6 @@ public class RepairLast {
 	}
 
 	public static void main(String[] args) {
-		new RepairClass(new RepairLast(args).targetFile);
+		new RepairXml(new RepairLast(args).targetFile);
 	}
 }

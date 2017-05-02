@@ -64,7 +64,7 @@ public class OutputTester {
 			byte[] data = new byte[(int) targetFile.length()];
 			fis.read(data);
 			fis.close();
-			text = new String(data, "iso-8859-1");
+			text = new String(data, "UTF-8");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -88,7 +88,7 @@ public class OutputTester {
 	}
 
 	public static void main(String[] args) {
-		File folder = new File("/media/koger/New Volume/testFolder/");
+		File folder = new File("\\\\vhub.rnd.ki.sw.ericsson.se\\home\\xkovger\\Downloads\\testFolder");
 		// read the files in the folder
 		File[] listOfFiles = folder.listFiles(new FileFilter() {
 			@Override

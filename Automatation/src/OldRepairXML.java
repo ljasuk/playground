@@ -8,7 +8,7 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.regex.*;
 
-class RepairXML {
+class OldRepairXML {
 
 	private static File targetFile;
 	private static File workDir = new File("C:\\Users\\s24267\\Downloads");
@@ -60,7 +60,7 @@ class RepairXML {
 	
 	private static void repairTM(){
 		content = content.replaceFirst("p>.+?Ericsson AB", "p>&copy; Ericsson AB");
-		if (content.contains("�")){
+		if (content.contains("�")){
 			System.out.println("Repairing (�)");
 			content = content.replace("’", "&rsquo;");	// apostrophe
 			content = content.replace("→", "&rarr;");		// right arrow
