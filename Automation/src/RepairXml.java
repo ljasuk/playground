@@ -23,6 +23,8 @@ class RepairXml {
 				+ "  (" + String.format("%.2f", 
 						(((double) Math.abs(targetFile.length() - lengthBefore)*100) 
 								/ (double)lengthBefore))+ "%)");
+		// check for wrong characters
+		if (newContent.contains("â")) System.out.println("ENCODING ERROR");
 		System.out.println("\nDONE");
 		try {
 			Thread.sleep(500);
@@ -30,19 +32,37 @@ class RepairXml {
 			e.printStackTrace();
 		}
 	}
-
-	private String tableToGrid(String text) {
-		Matcher tableMatcher = Pattern.compile("(?s)<list(.+?)</list>").matcher(text);
-		while (tableMatcher.find()) {
-			String list = tableMatcher.group(1);
-			if (list.contains("<table")) {
-				System.out.println("Replacing tables in lists to grids...");
-				String grid = list.replace("<caption></caption>", "");
-				grid = grid.replace("<caption/>", "");
-				grid = grid.replaceAll("<table.*?>", "<grid frame =\"all\">");
-				grid = grid.replace("</table>", "</grid>");
-				text = text.replace(list, grid);
-			}
+	
+	private String approve(String text) {
+		System.out.println("Approve document?(y/*) ");
+		if (in.nextLine().trim().toLowerCase().equals("y")) {
+			text = Approver.apply(text);
+		}
+		return text;
+	}
+	
+	private String figuresInSL(String text) {
+		if (text.contains("<figure")){
+			text = text.replaceAll("<figure.*?>", "<p>");
+			text = text.replace("</figure>", "</p>");
+			text = text.replace("<caption/>", "");
+		}
+		return text;
+	}
+	
+	private String condenseStepxmp(String text) {
+		if (text.contains("stepxmp")){
+			Matcher stepxmpMatcher = Pattern.compile("(?s)<stepxmp>(.+?)</stepxmp>").matcher(text);
+			while (stepxmpMatcher.find()){
+				Matcher longLine = Pattern.compile("\n.{65,}?\n")
+						.matcher(stepxmpMatcher.group(1).replace("<preform>", "").replace("</preform>", ""));
+				if (longLine.find()) {
+					System.out.println("Turning stepxmp condensed:\n" + longLine.group());
+					String replacement = stepxmpMatcher.group()
+							.replace("<stepxmp>", "<stepxmp condensed=\"yes\">");
+					text = text.replace(stepxmpMatcher.group(), replacement);
+				}
+			}			
 		}
 		return text;
 	}
@@ -57,8 +77,10 @@ class RepairXml {
 					.replace("</list-item>", "</sl-item>")
 					.replaceAll("<example.*?>", "<stepxmp>")
 					.replace("</example>", "</stepxmp>")
-					.replace("<p><preform>", "<stpexmp><preform>")
-					.replace("</preform></p>", "</preform></stpexm>")
+					.replace("<p><preform>", "<stepxmp>\n<preform>\n")
+					.replace("</preform></p>", "\n</preform>\n</stepxmp>")
+					.replace("<table", "</sl-item>\n</step-list>\n<table")
+					.replace("</table>", "</table>\n<step-list reset=\"no\">\n<sl-item>")
 					+ text.substring(index);
 			cursor = index + text.substring(index).indexOf("</list>")+7;
 		}
@@ -70,8 +92,10 @@ class RepairXml {
 				.replaceAll("<example.*?>", "<stepxmp>")
 				.replace("</example>", "</stepxmp>")
 				.replace("</list>", "</step-list>")
-				.replace("<p><preform>", "<stpexp><preform>")
-				.replace("</preform></p>", "</preform></stpexp>");
+				.replace("<p><preform>", "<stepxmp><preform>\n")
+				.replace("</preform></p>", "\n</preform></stepxmp>")
+				.replace("<table", "</sl-item>\n</step-list>\n<table")
+				.replace("</table>", "</table>\n<step-list reset=\"no\">\n<sl-item>");
 		
 		return text;
 	}
@@ -123,8 +147,37 @@ class RepairXml {
 
 			cursor = listBegin + newSize;
 		}
+		
+		// replace figures
+		text = figuresInSL(text);
+		
 		return text;
 	}
+	
+	/**
+	 * turns tables in lists that have captions into grid
+	 * @param text
+	 * @return repaired text
+	 */
+	private String tableToGrid(String text) {
+		Matcher listMatcher = Pattern.compile("(?s)<list(.+?)</list>").matcher(text);
+		while (listMatcher.find()) {
+			String list = listMatcher.group(1);
+			Matcher tableMatcher = Pattern.compile("(?s)<table.+?</table>").matcher(list);
+			while (tableMatcher.find()){
+				if (tableMatcher.group().contains("<caption/>")) {
+					String grid = tableMatcher.group().replace("<caption></caption>", "");
+					grid = grid.replace("<caption/>", "");
+					grid = grid.replaceAll("<table.*?>", "<grid frame =\"all\">");
+					grid = grid.replace("</table>", "</grid>");
+					text = text.replace(tableMatcher.group(), grid);
+				}
+			}
+		}
+		return text;
+	}
+
+
 
 	private int count(String regex, String target) {
 		Matcher matcher = Pattern.compile(regex).matcher(target);
@@ -226,6 +279,7 @@ class RepairXml {
 		text = text.replaceAll("<term>\\s+", "<term>");
 		text = text.replaceAll("\\s+</term", "</term");
 		text = text.replace("xml:id=\"_", "xml:id=\"");
+		text = text.replaceAll("xml:id=\"\\d+", "xml:id=\"");
 		return text;
 	}
 
@@ -234,12 +288,14 @@ class RepairXml {
 		text = addSignature(text);
 		text = colwidth(text);
 		text = figInP(text);
+		text = tableToGrid(text);
 		try {
 			text = substeps(text);
 		} catch (StringIndexOutOfBoundsException e1) {
 			e1.printStackTrace();
 		}
-
+		text = condenseStepxmp(text);
+		
 		// resource-id inside emph
 		text = text.replaceAll("<emph.*?>(<resource-id.+?/resource-id>)</emph>", "$1");
 		// figures in paragraphs
@@ -251,11 +307,10 @@ class RepairXml {
 		text = text.replaceFirst("(<reference xml:id=\"references\">)\n(</reference>)",
 				"$1<reference-list><rf-subsection></rf-subsection></reference-list>$2");
 		
-		text = tableToGrid(text);
+		
 		// scalefit of graphics set to 1
 		text = text.replace("scalefit=\"0\"", "scalefit=\"1\"");
-		// check for wrong characters
-		if (text.contains("ï¿½")) System.out.println("ENCODING ERROR");		
+		text = approve(text);
 		return text;
 	}
 

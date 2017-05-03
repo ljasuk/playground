@@ -5,8 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.time.LocalDateTime;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -21,25 +19,8 @@ public class Approver {
 		} catch (IOException x) {
 		    System.err.format("IOException: %s%n", x);
 		}
-	}
-	
-	private String repairTM(String text){
-		text = text.replaceFirst("p>.+?Ericsson AB", "p>&copy; Ericsson AB");
-		if (text.contains("�")){
-			System.out.println("Repairing (�)");
-			text = text.replace("’", "&rsquo;");	// apostrophe
-			text = text.replace("→", "&rarr;");	// right arrow
-			text = text.replace("™", "&trade;");	// trademark mark
-			text = text.replace("®", "&reg;");		// R in circle
-			text = text.replace("├", "&boxvr;");	// tree line T
-			text = text.replace("─", "&boxh;");	// tree line horizontal
-			text = text.replace("│", "&boxv;");	// tree line vertical
-			text = text.replace("└", "&boxur;");	// tree corner UP-RIGHT
-			text = text.replace("—", "&mdash;");	// em dash
-			text = text.replace(" ", " ");		// spaces next to em dash
-			System.out.println((text.contains("�")) ? "Could not repair \"�\"" : "Removed all \"�\"");
-		}
-		return text;
+		// check for wrong characters
+		if (newContent.contains("�")) System.out.println("ENCODING ERROR");
 	}
 	
 	private String removeRev(String text){
@@ -49,7 +30,7 @@ public class Approver {
 		while (revMatcher.find()) rev = revMatcher.group(1);
 		//System.out.println(rev);
 		text = text.replaceFirst("<rev>.+?</rev>", ("<rev>"+rev+"</rev>"));
-		System.out.println(targetFile.getName()+": "+rev);
+		System.out.println("Modified to revision: "+rev);
 		return text;
 	}
 	
@@ -95,31 +76,22 @@ public class Approver {
 		}
 		return text;
 	}
-	
-	private String readContent() {
-		Scanner fileIn = null;
-		String fileContent = null;
-		try {
-			fileIn = new Scanner(targetFile);
-			//System.out.println(in.useDelimiter("\\Z").hasNext());
-
-			fileContent = fileIn.useDelimiter("\\Z").next();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (NoSuchElementException e) {
-			e.printStackTrace();
-			// System.out.println(e.getMessage());
-		} finally {
-			fileIn.close();
-		}
-		return fileContent;
-	}
 
 	public Approver(File targetFile) {
 		this.targetFile = targetFile;
 		content = byteRead();
-		newContent = repairTM(modify(content));
+		newContent = modify(content);
 		writeFile();
+	}
+
+	public Approver(String content) {
+		this.content = content;
+		newContent = modify(content);
+		targetFile = null;
+	}
+	
+	public static String apply(String content){
+		return new String(new Approver(content).newContent);
 	}
 	
 }

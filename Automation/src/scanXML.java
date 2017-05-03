@@ -3,8 +3,7 @@ import java.io.FilenameFilter;
 import java.util.Scanner;
 
 /**
- * Scans a directory for .adoc files, and runs the {@code Replacer} on them,
- * also providing what to replace.
+ * Scans a directory for .xml files, and runs a class on them.
  * @author Gergely Kovacs
  *
  */
@@ -29,23 +28,26 @@ public class scanXML {
 		}
 		
 		// ask for user input if folder does not exist
-		Scanner in = new Scanner(System.in);
-		while (!folder.exists()) {
-			System.out.println(folder+" does not exist. Provide different folder," +
-					" or press Ctrl-X to exit:");
-			
-			folder = new File(in.next());
-			//in.next();
-			
+		if (!folder.exists()) {
+			Scanner in = new Scanner(System.in);
+			while (!folder.exists()) {
+				System.out.println(
+						folder + " does not exist. Provide different folder,"
+								+ " or press Ctrl-X to exit:");
+
+				folder = new File(in.nextLine());
+				// in.next();
+
+			}
+			in.close();
 		}
-		in.close();
 		
 		// read the folder and filter for .adoc extension
 		File[] listOfFiles = folder.listFiles(xmlExt);
 		
 		// sending all the files to the replacer
 		for (File file : listOfFiles) {
-			new Approver(file);
+			new RepairXml(file);
 		}
 
 	}
