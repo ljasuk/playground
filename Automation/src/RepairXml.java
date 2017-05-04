@@ -1,3 +1,4 @@
+import java.awt.Desktop;
 import java.io.*;
 import java.nio.file.Files;
 import java.util.*;
@@ -22,14 +23,18 @@ class RepairXml {
         System.out.println("Size difference:    " + (targetFile.length() - lengthBefore) + "  ("
                 + String.format("%.2f", (((double) Math.abs(targetFile.length() - lengthBefore) * 100) / (double) lengthBefore)) + "%)");
         // check for wrong characters
-        if (newContent.contains("â"))
+        if (newContent.contains("â")) {
             System.out.println("ENCODING ERROR");
-        System.out.println("\nDONE");
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         }
+        
+        try {
+            Desktop.getDesktop().open(targetFile);
+        } catch (IOException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+        
+        System.out.println("\nDONE");
     }
 
     private String approve(String text) {
@@ -55,7 +60,7 @@ class RepairXml {
             while (stepxmpMatcher.find()) {
                 Matcher longLine = Pattern.compile("\n.{65,}?\n").matcher(stepxmpMatcher.group(1).replace("<preform>", "").replace("</preform>", ""));
                 if (longLine.find()) {
-                    System.out.println("Turning stepxmp condensed:\n" + longLine.group());
+                    //System.out.println("Turning stepxmp condensed:\n" + longLine.group());
                     String replacement = stepxmpMatcher.group().replace("<stepxmp>", "<stepxmp condensed=\"yes\">");
                     text = text.replace(stepxmpMatcher.group(), replacement);
                 }
@@ -106,28 +111,58 @@ class RepairXml {
         return list;
     }
     
-    private String substeps(String string) throws StringIndexOutOfBoundsException {
+    private String breakAtSL(String text) {
+        while (text.contains("<list type=\"numeric")){
+            int beginIndex = text.indexOf("<list type=\"numeric");
+            int endIndex = text.indexOf("</list>", beginIndex) + 7;
+            text = text.substring(0, beginIndex)
+                    + "</list-item></list>"
+                    + turnToSL(text.substring(beginIndex, endIndex))
+                    + "<list type=\"unordered\" compact=\"no\"><list-item compact=\"no\">"
+                    + text.substring(endIndex);
+        }
+        text = text.replaceAll("<list-item compact=\"no\">\n?</list-item>", "");
+        text = text.replaceAll("<list type=\"unordered\" compact=\"no\">\n?</list>", "");
+        
+        return text;
+    }
+    
+    private String substeps(final String string) throws StringIndexOutOfBoundsException {
         StringBuilder text = new StringBuilder(string);
         int cursor = 0;
-        String oTag = "<list type=\"numeric";
+        String numTag = "<list type=\"numeric";
+        String listTag = "<list type";
         String cTag = "</list>";
-
+                
         // while there are numeric lists after the cursor
-        while (text.substring(cursor).contains(oTag)) {
-            int listBegin = text.indexOf(oTag, cursor);
+        while (text.substring(cursor).contains(numTag)) {
+            int listBegin = text.indexOf(listTag, cursor);
             int listClosing = text.indexOf(cTag, listBegin) + 7;
             String list = text.substring(listBegin, listClosing);
 
             // while the list is not complete, move listClosing to next closing tag
-            while (count("<list type", list) != count(cTag, list)) {
-                System.out.println("Nested list!");
+            byte nestedLists = 0;
+            while (count(listTag, list) != count(cTag, list)) {
+                nestedLists++;
                 listClosing = text.indexOf(cTag, listClosing) + 7;
                 list = text.substring(listBegin, listClosing);
             }
+            
+            if (nestedLists > 0) {
+                // if it is an unordered list
+                if (!list.startsWith(numTag)) {
+                    System.out.println("Bullet list with " + nestedLists + " nested lists");
+                    int newSize = (breakAtSL(list)).length();
+                    text.replace(listBegin, listClosing, breakAtSL(text.substring(listBegin, listClosing)));
+                    cursor = listBegin + newSize;
+                    continue;
+                }
+                System.out.println("Steplist with " + nestedLists + " nested lists");
+            }
 
             // turn nested numeric lists into substeplists
-            while (count(oTag, list) > 1) {
-                int beginIndex = text.indexOf(oTag, listBegin + 10);
+            while (count(numTag, list) > 1) {
+                int beginIndex = text.indexOf(numTag, listBegin + 10);
                 int endIndex = text.indexOf(cTag, beginIndex) + 7;
                 int kul = turnToSubstep(text.substring(beginIndex, endIndex))
                         .length() - text.substring(beginIndex, endIndex).length();
@@ -140,12 +175,11 @@ class RepairXml {
             int newSize = turnToSL(text.substring(listBegin, listClosing)).length();
             text.replace(listBegin, listClosing, turnToSL(text.substring(listBegin, listClosing)));
             cursor = listBegin + newSize;
+            
         }
 
         // replace figures
-        string = figuresInSL(text.toString());
-
-        return string;
+        return  figuresInSL(text.toString());
     }
 
     /**
