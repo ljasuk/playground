@@ -21,6 +21,7 @@
 
 ### Completeness Errors
 - [ ] titled-block mistery: integrationWiFi (1)
+- [x] graphics in double paragraphs?! integrationWiFi(4), integrationPKI(1)
 - [x] steplist in a list: troubleshootingGuide(1), healthCheck(1), VMBackup(1)
 - [ ] resource-id in a resource-id: demoDescrption (1)
 - [x] figures in steplists to '<p><graphics>' : VMCreationVSphere

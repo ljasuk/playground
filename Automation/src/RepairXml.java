@@ -11,6 +11,7 @@ class RepairXml {
     private final String newContent;
     private final String[] sig;
     private final Scanner in;
+    private final int preDefSigNo;
 
     private void writeFile() {
         long lengthBefore = targetFile.length();
@@ -27,11 +28,12 @@ class RepairXml {
             System.out.println("ENCODING ERROR");
         }
         
-        try {
-            Desktop.getDesktop().open(targetFile);
-        } catch (IOException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
+        if (preDefSigNo == 0) {
+            try {
+                Desktop.getDesktop().open(targetFile);
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
         }
         
         System.out.println("\nDONE");
@@ -39,7 +41,7 @@ class RepairXml {
 
     private String approve(String text) {
         System.out.println("Approve document?(y/*) ");
-        if (in.nextLine().trim().toLowerCase().equals("y")) {
+        if (preDefSigNo == 0 && in.nextLine().trim().toLowerCase().equals("y")) {
             text = Approver.apply(text);
         }
         return text;
@@ -100,7 +102,7 @@ class RepairXml {
                 .replace("<table", "</sl-item>\n</step-list>\n<table")
                 .replace("</table>", "</table>\n<step-list reset=\"no\">\n<sl-item>");
 
-        return text;
+        return figuresInSL(text);
     }
 
     private String turnToSubstep(String list) {
@@ -127,7 +129,7 @@ class RepairXml {
         return text;
     }
     
-    private String substeps(final String string) throws StringIndexOutOfBoundsException {
+    private String steplist(final String string) throws StringIndexOutOfBoundsException {
         StringBuilder text = new StringBuilder(string);
         int cursor = 0;
         String numTag = "<list type=\"numeric";
@@ -179,7 +181,7 @@ class RepairXml {
         }
 
         // replace figures
-        return  figuresInSL(text.toString());
+        return  text.toString();
     }
 
     /**
@@ -221,11 +223,10 @@ class RepairXml {
         int openingTag = count("<p><figure", text);
         if (openingTag > 0 && openingTag == count("</figure></p>", text)) {
             System.out.print(openingTag + " figures in paragraphs.");
-            System.out.println("Take figures out of paragraphs?");
-            if (in.nextLine().toLowerCase().equals("y")) {
-                text = text.replace("<p><figure", "<figure");
-                text = text.replace("</figure></p>", "</figure>");
-            }
+
+            text = text.replace("<p><figure", "<figure");
+            text = text.replace("</figure></p>", "</figure>");
+
         }
         return text;
     }
@@ -244,7 +245,7 @@ class RepairXml {
     }
 
     private String colwidth(String text) {
-        if (text.contains("colwidth")) {
+        if (text.contains("colwidth") && preDefSigNo == 0) {
             System.out.println("Remove colwidht?(y/*) ");
             if (in.nextLine().trim().toLowerCase().equals("y")) {
                 text = text.replaceAll("\\scolwidth=\".+?\"", "");
@@ -265,27 +266,32 @@ class RepairXml {
             { "Juha Ritvanen", "LMFJURI" }, 
             { "Juha S&auml;&auml;skilahti", "LMFJSAA" },
             { "Syed Safi Ali Shah", "ESYISHH" } };
-
-        if (sig[1].length() < 3) {
-            System.out.println("\nNo signature!\nAdd signature?");
-        } else {
-            System.out.println("\nSignature: " + Arrays.toString(sig));
-            System.out.println("Change signature?");
-        }
-
-        System.out.println("0 NO");
-        for (int i = 0; i < SIGNATURES.length; i++) {
-            System.out.println((i + 1) + " " + Arrays.toString(SIGNATURES[i]));
-        }
-
+        
         int choice = 0;
-        choice = in.nextInt() - 1;
-        in.nextLine();
+        
+        if (preDefSigNo == 0) {
+            if (sig[1].length() < 3) {
+                System.out.println("\nNo signature!\nAdd signature?");
+            } else {
+                System.out.println("\nSignature: " + Arrays.toString(sig));
+                System.out.println("Change signature?");
+            }
 
-        if (choice < 0) {
-            return string;
+            System.out.println("0 NO");
+            for (int i = 0; i < SIGNATURES.length; i++) {
+                System.out.println((i + 1) + " " + Arrays.toString(SIGNATURES[i]));
+            }
+
+            choice = in.nextInt() - 1;
+            in.nextLine();
+
+            if (choice < 0) {
+                return string;
+            }
+        } else {
+            choice = preDefSigNo - 1;
         }
-
+        
         int beginIndex = text.indexOf("<drafted-by>") + 12;
         int endIndex = text.indexOf("</drafted-by>");
         beginIndex = text.indexOf("<person>", beginIndex) + 8;
@@ -319,7 +325,7 @@ class RepairXml {
         text = figInP(text);
         text = tableToGrid(text);
         try {
-            text = substeps(text);
+            text = steplist(text);
         } catch (StringIndexOutOfBoundsException e1) {
             e1.printStackTrace();
         }
@@ -380,6 +386,18 @@ class RepairXml {
         this.targetFile = targetFile;
         System.out.println(targetFile.getName());
         content = byteRead();
+        sig = readMetadata();
+        in = new Scanner(System.in);
+        preDefSigNo = 0;
+        newContent = repair(content);
+        writeFile();
+    }
+    
+    public RepairXml(File targetFile, int preDefSigNo) {
+        this.targetFile = targetFile;
+        System.out.println(targetFile.getName());
+        content = byteRead();
+        this.preDefSigNo = preDefSigNo;
         sig = readMetadata();
         in = new Scanner(System.in);
         newContent = repair(content);
