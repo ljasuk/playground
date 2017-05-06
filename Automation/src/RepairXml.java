@@ -24,7 +24,7 @@ class RepairXml {
         System.out.println("Size difference:    " + (targetFile.length() - lengthBefore) + "  ("
                 + String.format("%.2f", (((double) Math.abs(targetFile.length() - lengthBefore) * 100) / (double) lengthBefore)) + "%)");
         // check for wrong characters
-        if (newContent.contains("â")) {
+        if (newContent.contains("ï¿½")) {
             System.out.println("ENCODING ERROR");
         }
         
@@ -369,13 +369,7 @@ class RepairXml {
     private String byteRead() {
         String text = null;
         try {
-            FileInputStream fis = new FileInputStream(targetFile.getPath());
-            byte[] data = new byte[(int) targetFile.length()];
-            fis.read(data);
-            fis.close();
-            text = new String(data, "UTF-8");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            text = new String(Files.readAllBytes(targetFile.toPath()), "UTF-8");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -383,14 +377,7 @@ class RepairXml {
     }
 
     public RepairXml(File targetFile) {
-        this.targetFile = targetFile;
-        System.out.println(targetFile.getName());
-        content = byteRead();
-        sig = readMetadata();
-        in = new Scanner(System.in);
-        preDefSigNo = 0;
-        newContent = repair(content);
-        writeFile();
+        this(targetFile, 0);
     }
     
     public RepairXml(File targetFile, int preDefSigNo) {

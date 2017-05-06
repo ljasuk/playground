@@ -1,6 +1,8 @@
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
 import java.nio.file.Files;
@@ -60,7 +62,7 @@ class OldRepairXML {
 	
 	private static void repairTM(){
 		content = content.replaceFirst("p>.+?Ericsson AB", "p>&copy; Ericsson AB");
-		if (content.contains("�")){
+		if (content.contains("�")){
 			System.out.println("Repairing (�)");
 			content = content.replace("’", "&rsquo;");	// apostrophe
 			content = content.replace("→", "&rarr;");		// right arrow
@@ -318,18 +320,22 @@ class OldRepairXML {
 		}
 	}
 
-	/*private static void streamContent() {
-		try (InputStream in = Files.newInputStream(targetFile.toPath());
+	private static void streamContent() {
+		try (//InputStream in = Files.newInputStream(targetFile.toPath());
 				BufferedReader reader = new BufferedReader(
-						new InputStreamReader(in))) {
-			String line = null;
-			while ((line = reader.readLine()) != null) {
+						new FileReader(targetFile))) {
+			char[] cbuf = {};
+                        while (reader.ready()){
+                        reader.read(cbuf);}
+                        content = new String(cbuf);
+                        System.out.println(content);
+			/*while ((line = reader.readLine()) != null) {
 				System.out.println(line);
-			}
+			}*/
 		} catch (IOException x) {
 			System.err.println(x);
 		}
-	}*/
+	}
 
 	private static File lastFileModified() {
 		File[] files = workDir.listFiles();
@@ -367,8 +373,10 @@ class OldRepairXML {
 		
 
 		System.out.println(targetFile.getName());
-
-		readContent();
+                
+    
+                streamContent();
+                System.out.println(content);
 		clearSpaces();
 		//System.out.println(content.substring(0, 1200));
 		readMetadata();
@@ -389,7 +397,7 @@ class OldRepairXML {
 		figInTp();
 		emptyReference();
 		tableToGrid();
-		writeFile();
+		//writeFile();
 		
 		
 		System.out.println("\nDONE");
