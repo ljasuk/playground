@@ -5,19 +5,19 @@
 * Calendar class - túl bonyolult lett, mutable, 0tól számol
 **LocalDate, LocalTime!**
 LocalDate:
-* '.now()'					kiírja yyyy-MM-dd formában
-* '.of(2017, 5, 9)'			szintén kiírja
-* '.ofYearDay(2017, 159)'	
+* `.now()`					kiírja yyyy-MM-dd formában
+* `.of(2017, 5, 9)`			szintén kiírja
+* `.ofYearDay(2017, 159)`	
 LocalTime:
-* '.now()'
-* '.of(13,11)'
+* `.now()`
+* `.of(13,11)`
 LocalDateTime:
-* '.now()'
-* '.now(ZoneId.of("America/New_York"))'
-* '.now(Clock.systemUTC)'
-'ZonedDaateTime.now()'
+* `.now()`
+* `.now(ZoneId.of("America/New_York"))`
+* `.now(Clock.systemUTC)`
+`ZonedDaateTime.now()`
 immutable osztály, visszatérési értékként ad vissza olyat, pl h:
-'.plusDays(int)'
+`.plusDays(int)`
 
 ## kép feldolgozás
 a példában 3 osztály:
@@ -28,8 +28,8 @@ a példában 3 osztály:
 URI = getResource
 Buffered Image:
 * ImageIO.read(file)
-* '.getHeight', '.getWidth'
-* '.getRGB(x, y)
+* `.getHeight`, `.getWidth`
+* `.getRGB(x, y)
 
 pixelek feldolgozása:
 ```java
