@@ -1,55 +1,60 @@
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
+import java.util.Properties;
 
 public class RepairLast {
-	private final File targetFile;
-	private final static FilenameFilter XML_EXT = new FilenameFilter() {
-		public boolean accept(File dir, String name) {
-			return name.toLowerCase().endsWith(".xml");
-		}
-	};
-	
-	private File lastFileModified(File workDir) {
-		File[] files = workDir.listFiles(XML_EXT);
-		long lastMod = Long.MIN_VALUE;
-		File choice = null;
-		for (File file : files) {
-			if (file.lastModified() > lastMod) {
-				choice = file;
-				lastMod = file.lastModified();
-			}
-		}
-		System.out.println("Last modified file in " + workDir.getPath() + ":");
-		return choice;
-	}
+    private static File targetFile;
+    private static File downloadsFolder;
+    private static FilenameFilter extensionFilter;
 
-	private File parseArgs(String[] args) {
-		File arg = new File(String.join(" ",args).replace("\\", "\\\\"));
-		//System.out.println(args[0]);
-		if (arg.isFile()) {
-			return arg;
-		} else if (arg.isDirectory()){
-			return lastFileModified(arg);
-		}
-		return null;
-	}
-	
-	private File setTarget(String[] args){
-		File target = null;
-		
-		if (args.length > 0 && parseArgs(args) != null) {
-			target = parseArgs(args);
-		} else {
-			target = lastFileModified(new File("\\\\vhub.rnd.ki.sw.ericsson.se\\home\\xkovger\\Downloads"));
-		}
-		return target;
-	}
-	
-	private RepairLast(String[] args) {
-		targetFile = setTarget(args);
-	}
+    private static File lastFileModified(File workDir) {
+        File[] files = workDir.listFiles(extensionFilter);
+        long lastMod = Long.MIN_VALUE;
+        File choice = null;
+        for (File file : files) {
+            if (file.lastModified() > lastMod) {
+                choice = file;
+                lastMod = file.lastModified();
+            }
+        }
+        System.out.println("Last modified file in " + workDir.getPath() + ":");
+        return choice;
+    }
 
-	public static void main(String[] args) {
-		new RepairXml(new RepairLast(args).targetFile);
-	}
+    private static File parseArgs(String[] args) {
+        File arg = new File(String.join(" ", args).replace("\\", "\\\\"));
+        // System.out.println(args[0]);
+        if (arg.isFile()) {
+            return arg;
+        } else if (arg.isDirectory()) {
+            return lastFileModified(arg);
+        }
+        return null;
+    }
+
+    private static File setTarget(String[] args) {
+        File target = null;
+
+        if (args.length > 0 && parseArgs(args) != null) {
+            target = parseArgs(args);
+        } else {
+            target = lastFileModified(downloadsFolder);
+        }
+        return target;
+    }
+
+    public static void main(String[] args) {
+        Properties props = new Properties();
+        try {
+            props.load(scanXML.class.getResourceAsStream("config.txt"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        downloadsFolder = new File(props.getProperty("downloadsFolder"));
+        String extension = props.getProperty("extension");
+        extensionFilter = (File dir, String name) -> name.toLowerCase().endsWith("."+extension);
+        targetFile = setTarget(args);
+        new RepairXml(targetFile);
+    }
 }

@@ -4,7 +4,7 @@ import java.nio.file.Files;
 import java.util.*;
 import java.util.regex.*;
 
-class RepairXml {
+public class RepairXml {
 
     private final File targetFile;
     private final String content;

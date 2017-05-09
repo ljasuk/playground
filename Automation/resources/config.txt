@@ -1,0 +1,4 @@
+folder=\\\\vhub.rnd.ki.sw.ericsson.se\\home\\xkovger\\Downloads\\xml
+folder2=C:\\eclipse\\xml\\
+downloadsFolder=\\\\vhub.rnd.ki.sw.ericsson.se\\home\\xkovger\\Downloads
+extension=xml
