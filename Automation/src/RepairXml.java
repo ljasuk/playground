@@ -255,17 +255,23 @@ public class RepairXml {
         return text;
     }
     
+    private static String[][] loadSignatures(){
+        Properties props = new Properties();
+        try {
+            props.load(RepairXml.class.getResourceAsStream("signatures.txt"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String[][] sig = new String[9][2];
+        for (int i = 1; i < 10; i++) {
+            sig[i-1] = props.getProperty(Integer.toString(i)).split(",");
+        }
+        return sig;        
+    }
+    
     private String addSignature(String string) {
         StringBuilder text = new StringBuilder(string);
-        final String[][] SIGNATURES = new String[][] { 
-            { "Gergely Kovacs", "XKOVGER" }, 
-            { "Izsak Soos", "XIZSSOO" }, 
-            { "Ferenc Nagy", "ENAGFER" },
-            { "Ismo Paukamainen", "LMFISP" }, 
-            { "Antti Tolonen", "EANTTTO" }, 
-            { "Juha Ritvanen", "LMFJURI" }, 
-            { "Juha S&auml;&auml;skilahti", "LMFJSAA" },
-            { "Syed Safi Ali Shah", "ESYISHH" } };
+        final String[][] SIGNATURES = loadSignatures();
         
         int choice = 0;
         
@@ -319,6 +325,7 @@ public class RepairXml {
     }
 
     private String repair(String text) {
+
         text = clearSpaces(text);
         text = addSignature(text);
         text = colwidth(text);
@@ -345,6 +352,7 @@ public class RepairXml {
         // scalefit of graphics set to 1
         text = text.replace("scalefit=\"0\"", "scalefit=\"1\"");
         text = approve(text);
+
         return text;
     }
 

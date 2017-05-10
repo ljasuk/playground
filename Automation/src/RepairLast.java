@@ -47,7 +47,7 @@ public class RepairLast {
     public static void main(String[] args) {
         Properties props = new Properties();
         try {
-            props.load(scanXML.class.getResourceAsStream("config.txt"));
+            props.load(RepairLast.class.getResourceAsStream("config.properties"));
         } catch (IOException e) {
             e.printStackTrace();
         }

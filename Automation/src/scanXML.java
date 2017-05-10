@@ -27,7 +27,7 @@ public class scanXML {
     public static void main(String[] args) {
         Properties props = new Properties();
         try {
-            props.load(scanXML.class.getResourceAsStream("config.txt"));
+            props.load(scanXML.class.getResourceAsStream("config.properties"));
         } catch (IOException e) {
             e.printStackTrace();
         }
