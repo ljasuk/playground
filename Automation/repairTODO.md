@@ -1,7 +1,13 @@
 # RepairXML.java TODO
 
+### Priority
+- [ ] make program comfortable:
+  - [ ] unify it to one program
+  - [ ] menu and arguments
+- [ ] check with whole current XML library
+
 ### Functions to add
-- [x] tables in numeric list to grid - 'client-facing_interfaces.xml'
+- [x] tables in numeric list to grid - `client-facing_interfaces.xml`
 - [x] turn RepairXML methods from static to class methods
 - [x] handle UTF-8 or appropriate encoding
 - [x] too long: health_check, troubleshooting_g, UATS?, Demo?, etc.
@@ -16,7 +22,7 @@
 - [x] test new [Repair](src/RepairXml.java) and
 [output tester](src/OutputTester.java)
 - [x] replace old [RepairXML](src/OldRepairXML.java)
-- [x] test [repair](src/RepairXml.java) and check '<stpexp>' tag
+- [x] test [repair](src/RepairXml.java) and check `<stpexp>` tag
 - [ ] clean up whole project
 
 ### Completeness Errors
@@ -24,7 +30,7 @@
 - [x] graphics in double paragraphs?! integrationWiFi(4), integrationPKI(1)
 - [x] steplist in a list: troubleshootingGuide(1), healthCheck(1), VMBackup(1)
 - [ ] resource-id in a resource-id: demoDescrption (1)
-- [x] figures in steplists to '<p><graphics>' : VMCreationVSphere
+- [x] figures in steplists to `<p><graphics>` : VMCreationVSphere
 - [ ] table in list in steplist: VMCreationVSphere(2)
 - [x] xml:id starts with number: releaseNote(1)
 - [ ] emph in reference list: hardwareRequirements(1) _dont bother_
