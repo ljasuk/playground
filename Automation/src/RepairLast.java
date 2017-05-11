@@ -36,8 +36,8 @@ public class RepairLast {
     private static File setTarget(String[] args) {
         File target = null;
 
-        if (args.length > 0 && parseArgs(args) != null) {
-            target = parseArgs(args);
+        if (args.length > 0 && (target = parseArgs(args)).isFile()) {
+            return target;
         } else {
             target = lastFileModified(downloadsFolder);
         }
