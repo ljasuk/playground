@@ -3,7 +3,7 @@
 - `System.out` & `System.err` - nem lehet megkülönböztetni a szintjét,
 felhasználása, átirányítása nehézhes
 - __Log4J__ 1999
-  banknak kellett egy eszköz, amivel követni tudták a rendszer állapotát
+  - banknak kellett egy eszköz, amivel követni tudták a rendszer állapotát
 - __Java Util Logging (JUL)__ 2002, Java 1.4
   - faék egyszerű logging framework
   - semmivel nem kompatibilis
